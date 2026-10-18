@@ -12,7 +12,7 @@ export default function Services() {
     scrollToId('contact')
   }
   return (
-    <section id="services" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="services-title">
+    <section id="services" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="services-title">
       <div className="container-x">
         <SectionHead id="services-title" chip="Our services" lines={['Everything your home needs,', 'under one roof.']} accent={['roof.']} text="From land-ready plans to move-in-ready interiors — construction, design, and renovation, delivered by one accountable team." />
         <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">

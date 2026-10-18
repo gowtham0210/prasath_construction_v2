@@ -133,7 +133,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="about-mvv" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="about-mvv-title">
+      <section id="about-mvv" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="about-mvv-title">
         <div className="container-x">
           <SectionHead id="about-mvv-title" chip={aboutIntro.chip} lines={aboutIntro.lines} accent={['home.']} text={aboutIntro.text} />
           <Stagger className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8" gap={0.14}>
@@ -159,7 +159,7 @@ export default function AboutPage() {
 
       <WhyChoose id="about-why" />
 
-      <section id="about-trust" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="about-trust-title">
+      <section id="about-trust" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="about-trust-title">
         <div className="container-x grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
             <MaskReveal className="relative aspect-[4/5] overflow-hidden rounded-[36px] shadow-[0_40px_90px_-45px_rgba(40,60,110,0.65)]" from="left">
@@ -195,7 +195,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="about-visit" className="relative py-[clamp(50px,8vh,100px)] text-graphite" aria-labelledby="about-visit-title">
+      <section id="about-visit" className="relative py-[clamp(30px,4.5vh,56px)] text-graphite" aria-labelledby="about-visit-title">
         <div className="container-x">
           <Reveal y={60}>
             <div className="card grid items-center gap-8 !rounded-[32px] p-7 sm:p-10 lg:grid-cols-2 lg:!rounded-[44px] lg:p-14">
@@ -220,7 +220,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="about-gallery" className="relative py-[clamp(60px,9vh,120px)] text-graphite" aria-labelledby="about-gallery-title">
+      <section id="about-gallery" className="relative py-[clamp(36px,5vh,64px)] text-graphite" aria-labelledby="about-gallery-title">
         <div className="container-x">
           <SectionHead id="about-gallery-title" chip="Gallery" lines={['Every site', 'tells a story.']} accent={['story.']} text="Foundations, framing, finishing and handover — a real look at how we build, straight from our sites across Tamilnadu." />
           <Stagger className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-5" gap={0.07}>
@@ -236,7 +236,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="about-cta" className="relative pb-[clamp(60px,9vh,110px)] pt-6 text-graphite" aria-labelledby="about-cta-title">
+      <section id="about-cta" className="relative pb-[clamp(36px,5vh,64px)] pt-6 text-graphite" aria-labelledby="about-cta-title">
         <div className="container-x">
           <Reveal y={70}>
             <div className="hero-sky relative overflow-hidden rounded-[32px] px-7 py-14 sm:px-12 sm:py-20 lg:rounded-[44px]">

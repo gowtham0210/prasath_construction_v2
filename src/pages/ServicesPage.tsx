@@ -52,7 +52,7 @@ export default function ServicesPage() {
         actions={<><Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary on-dark">Book a Consultation</Magnetic><Magnetic as="button" onClick={() => scrollToId('packages')} className="btn-ghost on-dark text-white">View Packages</Magnetic></>}
       />
 
-      <section id="svc-list" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="svc-list-title">
+      <section id="svc-list" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="svc-list-title">
         <div className="container-x">
           <SectionHead id="svc-list-title" chip="What we do" lines={['Five services,', 'one accountable team.']} accent={['team.']} text="Construction, design and renovation — each delivered on the same fixed-cost, milestone-driven process." />
           <div className="mt-16 space-y-8 lg:space-y-12">
@@ -93,7 +93,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section id="svc-cta" className="relative pb-[clamp(60px,9vh,110px)] pt-6 text-graphite" aria-labelledby="svc-cta-title">
+      <section id="svc-cta" className="relative pb-[clamp(36px,5vh,64px)] pt-6 text-graphite" aria-labelledby="svc-cta-title">
         <div className="container-x">
           <Reveal y={70}>
             <div className="hero-sky relative overflow-hidden rounded-[32px] px-7 py-14 text-center sm:px-12 sm:py-20 lg:rounded-[44px]">

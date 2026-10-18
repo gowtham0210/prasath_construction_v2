@@ -16,20 +16,39 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
   const fine = useFinePointer()
   const [eng, onTime, turnkey, client, updates, pricing] = whyChoose
 
+  // the tiles arrive when they truly come into view (measured on screen, so a shifting page cannot leave them hidden)
   useLayoutEffect(() => {
     if (reduced) return
-    const ctx = gsap.context(() => {
-      const from = [{ x: -90 }, { y: 80 }, { x: 90 }, { x: -70, y: 40 }, { x: 70, y: 40 }, { y: 70 }]
-      gsap.utils.toArray<HTMLElement>('[data-tile]').forEach((el, i) => {
-        gsap.from(el, { ...from[i], opacity: 0, scale: 0.92, duration: 1.4, ease: 'expo.out', delay: (i % 3) * 0.08, scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' } })
-      })
-      const num = root.current?.querySelector<HTMLElement>('[data-count]')
-      if (num) {
-        const o = { v: 0 }
-        gsap.to(o, { v: 98, duration: 2.2, ease: 'power3.out', scrollTrigger: { trigger: num, start: 'top 90%', once: true }, onUpdate: () => (num.textContent = String(Math.round(o.v))) })
-      }
-    }, root)
-    return () => ctx.revert()
+    const el = root.current
+    if (!el) return
+    const tiles = Array.from(el.querySelectorAll<HTMLElement>('[data-tile]'))
+    const from = [{ x: -90 }, { y: 80 }, { x: 90 }, { x: -70, y: 40 }, { x: 70, y: 40 }, { y: 70 }]
+    gsap.set(tiles, { opacity: 0 })
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          const i = tiles.indexOf(e.target as HTMLElement)
+          gsap.fromTo(e.target, { ...from[i], opacity: 0, scale: 0.92 }, { x: 0, y: 0, opacity: 1, scale: 1, duration: 1.4, ease: 'expo.out', delay: (i % 3) * 0.08, clearProps: 'transform' })
+          io.unobserve(e.target)
+        }),
+      { rootMargin: '0px 0px -8% 0px' },
+    )
+    tiles.forEach((t) => io.observe(t))
+    // the percentage counts up when the dark tile appears
+    const num = el.querySelector<HTMLElement>('[data-count]')
+    const numIo = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting || !num) return
+      const o = { v: 0 }
+      gsap.to(o, { v: 98, duration: 2.2, ease: 'power3.out', onUpdate: () => (num.textContent = String(Math.round(o.v))) })
+      numIo.disconnect()
+    })
+    if (num) numIo.observe(num)
+    return () => {
+      io.disconnect()
+      numIo.disconnect()
+      gsap.set(tiles, { clearProps: 'all' })
+    }
   }, [reduced])
 
   const move = (e: PointerEvent<HTMLElement>) => {
@@ -43,7 +62,7 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
   const tile = 'group relative overflow-hidden rounded-[32px] transition-[transform,box-shadow] duration-700 ease-[var(--ease-expo)] hover:-translate-y-1.5'
 
   return (
-    <section id={id} ref={root} className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby={`${id}-title`}>
+    <section id={id} ref={root} className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby={`${id}-title`}>
       <div className="container-x">
         <SectionHead id={`${id}-title`} chip="Why choose us" lines={['Built different.', 'Built better.']} accent={['better.']} text="Six reasons families trust us with the biggest build of their lives." />
 

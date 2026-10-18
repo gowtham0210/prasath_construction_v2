@@ -28,7 +28,7 @@ export default function Stats({ id = 'stats' }: { id?: string }) {
   }, [reduced])
 
   return (
-    <section id={id} ref={root} className="relative py-[clamp(50px,8vh,100px)] text-graphite" aria-labelledby={`${id}-title`}>
+    <section id={id} ref={root} className="relative py-[clamp(30px,4.5vh,56px)] text-graphite" aria-labelledby={`${id}-title`}>
       <div className="container-x">
         <SectionHead id={`${id}-title`} chip="Portfolio at a glance" lines={['Numbers that', 'speak for themselves.']} accent={['themselves.']} text="Every figure is from completed projects — tracked, documented, and verified by our clients." />
         <Stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6" gap={0.12}>

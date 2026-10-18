@@ -38,7 +38,7 @@ export default function ProjectsPage() {
         actions={<><Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary on-dark">Book a Consultation</Magnetic><Magnetic as="button" onClick={() => scrollToId('packages')} className="btn-ghost on-dark text-white">View Packages</Magnetic></>}
       />
 
-      <section id="projects-grid" className="relative py-[clamp(50px,8vh,100px)] text-graphite" aria-label="All projects">
+      <section id="projects-grid" className="relative py-[clamp(30px,4.5vh,56px)] text-graphite" aria-label="All projects">
         <div className="container-x">
           <div role="tablist" aria-label="Filter projects" className="no-scrollbar flex gap-2 overflow-x-auto pb-2 md:justify-center">
             {projectFilters.map((f) => (
@@ -88,7 +88,7 @@ export default function ProjectsPage() {
 
       <ProcessBuild id="projects-process" />
 
-      <section id="projects-trust" className="relative py-[clamp(50px,8vh,100px)] text-graphite" aria-labelledby="projects-trust-title">
+      <section id="projects-trust" className="relative py-[clamp(30px,4.5vh,56px)] text-graphite" aria-labelledby="projects-trust-title">
         <div className="container-x">
           <Reveal y={60}>
             <div className="hero-sky relative overflow-hidden rounded-[32px] px-7 py-14 text-center sm:px-12 sm:py-20 lg:rounded-[44px]">

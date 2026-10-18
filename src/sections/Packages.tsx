@@ -9,7 +9,7 @@ import { setEnquiryPrefill } from '../lib/store'
 /** Fixed-cost construction packages, priced per sq.ft of built-up area. `more` adds a link to the Packages page. */
 export default function Packages({ more = false, id = 'packages' }: { more?: boolean; id?: string }) {
   return (
-    <section id={id} className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby={`${id}-title`}>
+    <section id={id} className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby={`${id}-title`}>
       <div className="container-x">
         <SectionHead id={`${id}-title`} chip={packagesIntro.chip} lines={packagesIntro.lines} accent={['surprises.']} text={packagesIntro.text} />
         <Stagger className="mx-auto mt-14 grid max-w-6xl items-stretch gap-6 lg:grid-cols-3 lg:gap-8" gap={0.14}>

@@ -91,7 +91,7 @@ export default function About() {
   }
 
   return (
-    <section id="about" ref={root} className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="about-title">
+    <section id="about" ref={root} className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="about-title">
       <div className="container-x">
         <div className="relative mx-auto max-w-3xl text-center">
           <div className="pointer-events-none absolute -inset-x-24 -inset-y-6 hidden lg:block" aria-hidden="true">

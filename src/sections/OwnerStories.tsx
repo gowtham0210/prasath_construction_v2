@@ -7,7 +7,7 @@ import { videos } from '../data/prasath'
 /** Videos from the YouTube channel: real homes, real stories. */
 export default function OwnerStories() {
   return (
-    <section id="stories" className="relative py-[clamp(60px,9vh,120px)] text-graphite" aria-labelledby="stories-title">
+    <section id="stories" className="relative py-[clamp(36px,5vh,64px)] text-graphite" aria-labelledby="stories-title">
       <div className="container-x">
         <SectionHead id="stories-title" chip="Hear from our owners" lines={['Real homes.', 'Real stories.']} accent={['stories.']} />
         <Stagger className="no-scrollbar -mx-[clamp(20px,4vw,56px)] mt-12 flex snap-x gap-5 overflow-x-auto px-[clamp(20px,4vw,56px)] pb-4" gap={0.08}>

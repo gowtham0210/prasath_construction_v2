@@ -69,6 +69,27 @@ export default function App() {
     return () => clearTimeout(t)
   }, [page])
 
+  // whenever the page changes height (images load, sections open), re-measure every scroll effect so none is left out of place
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout> | undefined
+    let last = document.documentElement.scrollHeight
+    const ro = new ResizeObserver(() => {
+      clearTimeout(t)
+      t = setTimeout(() => {
+        const h = document.documentElement.scrollHeight
+        if (Math.abs(h - last) > 4) {
+          last = h
+          ScrollTrigger.refresh()
+        }
+      }, 250)
+    })
+    ro.observe(document.body)
+    return () => {
+      clearTimeout(t)
+      ro.disconnect()
+    }
+  }, [])
+
   const onReveal = useCallback(() => setRevealed(true), [])
   const onDone = useCallback(() => setSplashDone(true), [])
 

@@ -46,7 +46,7 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
   }
 
   return (
-    <section id="projects" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="projects-title">
+    <section id="projects" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="projects-title">
       <div className="container-x">
         <SectionHead id="projects-title" chip="Our projects" lines={['A portfolio built on', 'trust & craftsmanship.']} accent={['craftsmanship.']} text="From compact city homes to sprawling villas — explore the spaces we have delivered, the ones in progress, and what is coming next." />
 

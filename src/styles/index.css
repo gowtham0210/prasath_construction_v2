@@ -167,8 +167,8 @@ html[data-hero='dark'] header[data-top='true'] .btn-primary { background: #fff; 
 @keyframes windowOn { from { opacity: 0; } to { opacity: 0.9; } }
 
 /* gallery photographs open like a curtain, then settle */
-[data-tile] { clip-path: inset(100% 0 0 0); transition: clip-path 1.2s var(--ease-expo); }
-[data-tile].is-in { clip-path: inset(0 0 0 0); }
-[data-tile] img { transform: scale(1.22); transition: transform 1.6s var(--ease-expo); }
-[data-tile].is-in img { transform: scale(1); }
-@media (prefers-reduced-motion: reduce) { [data-tile] { clip-path: none; } [data-tile] img { transform: none; } }
+#gallery-grid [data-tile] { clip-path: inset(100% 0 0 0); transition: clip-path 1.2s var(--ease-expo); }
+#gallery-grid [data-tile].is-in { clip-path: inset(0 0 0 0); }
+#gallery-grid [data-tile] img { transform: scale(1.22); transition: transform 1.6s var(--ease-expo); }
+#gallery-grid [data-tile].is-in img { transform: scale(1); }
+@media (prefers-reduced-motion: reduce) { #gallery-grid [data-tile] { clip-path: none; } #gallery-grid [data-tile] img { transform: none; } }

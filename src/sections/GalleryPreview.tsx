@@ -6,7 +6,7 @@ import { galleryIds } from '../data/media'
 /** A strip of site photographs with a link to the full Gallery page. */
 export default function GalleryPreview() {
   return (
-    <section id="home-gallery" className="relative py-[clamp(60px,9vh,120px)] text-graphite" aria-labelledby="home-gallery-title">
+    <section id="home-gallery" className="relative py-[clamp(36px,5vh,64px)] text-graphite" aria-labelledby="home-gallery-title">
       <div className="container-x">
         <SectionHead id="home-gallery-title" chip="Gallery" lines={['Inside the homes', "we've built."]} accent={['built.']} text="Foundations, framing, finishing and handover — a real look at how we build." />
         <Stagger className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-5" gap={0.07}>

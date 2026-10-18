@@ -85,7 +85,7 @@ export default function Testimonials() {
   }, [real])
 
   return (
-    <section id="testimonials" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="testimonials-title">
+    <section id="testimonials" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="testimonials-title">
       <div className="container-x">
         <SectionHead
           className="mx-auto max-w-3xl text-center [&_p]:mx-auto"

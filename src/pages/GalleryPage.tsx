@@ -90,7 +90,7 @@ export default function GalleryPage() {
         actions={<><Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary on-dark">Book a Consultation</Magnetic><Magnetic as="button" onClick={() => scrollToId('projects')} className="btn-ghost on-dark text-white">See the projects</Magnetic></>}
       />
 
-      <section id="gallery-grid" className="relative overflow-hidden py-[clamp(50px,8vh,100px)] text-graphite" aria-label="Photographs">
+      <section id="gallery-grid" className="relative overflow-hidden py-[clamp(30px,4.5vh,56px)] text-graphite" aria-label="Photographs">
         <div className="container-x">
           <div className="grid items-start gap-4 lg:gap-5" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
             {columns.map((idxs, c) => (
@@ -111,7 +111,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <section id="gallery-cta" className="relative pb-[clamp(60px,9vh,110px)] pt-6 text-graphite" aria-labelledby="gallery-cta-title">
+      <section id="gallery-cta" className="relative pb-[clamp(36px,5vh,64px)] pt-6 text-graphite" aria-labelledby="gallery-cta-title">
         <div className="container-x">
           <Reveal y={70}>
             <div className="hero-sky relative overflow-hidden rounded-[32px] px-7 py-14 text-center sm:px-12 sm:py-20 lg:rounded-[44px]">

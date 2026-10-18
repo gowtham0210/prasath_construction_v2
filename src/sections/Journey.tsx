@@ -138,7 +138,7 @@ function JourneyScrub() {
 /** Reduced motion: the film simply plays on a loop (it is silent) beside a plain list of the stages. */
 function JourneyStatic() {
   return (
-    <section id="process" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-label="Our process">
+    <section id="process" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-label="Our process">
       <div className="container-x">
         <span className="chip">Our process</span>
         <h2 id="process-title" className="display mt-4 text-[clamp(2rem,4vw,3.6rem)]">From napkin sketch to <span className="accent-word">handover keys.</span></h2>

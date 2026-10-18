@@ -84,7 +84,7 @@ export default function Contact() {
   const pill = 'group flex items-center gap-3 rounded-[28px] bg-white/75 p-1.5 pr-5 backdrop-blur transition-all duration-500'
 
   return (
-    <section id="contact" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="contact-form-title">
+    <section id="contact" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="contact-form-title">
       <div className="container-x">
         <Reveal y={90}>
           <div className="grid overflow-hidden rounded-[32px] bg-white/70 shadow-[0_50px_110px_-50px_rgba(40,60,110,0.6)] backdrop-blur-xl lg:grid-cols-12 lg:rounded-[44px]">

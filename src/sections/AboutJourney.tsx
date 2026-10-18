@@ -127,7 +127,7 @@ function Ride() {
 /** Phones and reduced motion: the same story as a calm stack of cards. */
 function Stack() {
   return (
-    <section id="about-journey" className="relative py-[clamp(70px,11vh,140px)] text-graphite" aria-labelledby="about-journey-title">
+    <section id="about-journey" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="about-journey-title">
       <div className="container-x">
         <SectionHead id="about-journey-title" chip="Our journey" lines={['Ten years.', 'One obsession.']} accent={['obsession.']} />
         <Stagger className="mt-12 grid gap-5 sm:grid-cols-2" gap={0.1}>

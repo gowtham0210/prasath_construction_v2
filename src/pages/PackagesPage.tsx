@@ -32,7 +32,7 @@ export default function PackagesPage() {
 
       <ProcessBuild id="packages-process" />
 
-      <section id="packages-cta" className="relative pb-[clamp(60px,9vh,110px)] pt-6 text-graphite" aria-labelledby="packages-cta-title">
+      <section id="packages-cta" className="relative pb-[clamp(36px,5vh,64px)] pt-6 text-graphite" aria-labelledby="packages-cta-title">
         <div className="container-x">
           <Reveal y={70}>
             <div className="hero-sky relative overflow-hidden rounded-[32px] px-7 py-14 text-center sm:px-12 sm:py-20 lg:rounded-[44px]">

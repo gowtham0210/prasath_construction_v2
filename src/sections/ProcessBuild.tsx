@@ -61,7 +61,7 @@ export default function ProcessBuild({ id = 'projects-process' }: { id?: string 
   const cur = journey[stage]
 
   return (
-    <section id={id} className="relative py-[clamp(60px,9vh,120px)] text-graphite" aria-labelledby={`${id}-title`}>
+    <section id={id} className="relative py-[clamp(36px,5vh,64px)] text-graphite" aria-labelledby={`${id}-title`}>
       <div className="container-x">
         <SectionHead id={`${id}-title`} chip="Our process" lines={['From napkin sketch', 'to handover keys.']} accent={['keys.']} text="A clear, milestone-driven process so you always know what's happening — and what's next." />
 

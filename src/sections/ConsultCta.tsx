@@ -8,7 +8,7 @@ import { setEnquiryPrefill } from '../lib/store'
 /** The closing invitation on the home page: a free site visit and a free consultation, each with a button to the Contact page. */
 export default function ConsultCta() {
   return (
-    <section id="consult-cta" className="relative pb-[clamp(60px,9vh,110px)] pt-6 text-graphite" aria-labelledby="consult-cta-title">
+    <section id="consult-cta" className="relative pb-[clamp(36px,5vh,64px)] pt-6 text-graphite" aria-labelledby="consult-cta-title">
       <div className="container-x space-y-6">
         <Reveal y={60}>
           <div className="card grid items-center gap-8 !rounded-[32px] p-7 sm:p-10 lg:grid-cols-2 lg:!rounded-[44px] lg:p-14">
