@@ -12,7 +12,7 @@ interface Props {
   play: boolean
 }
 
-const tagPos = ['right-[22%] top-[26%]', 'right-[9%] top-[40%]', 'right-[24%] top-[54%]']
+const tagPos = ['right-[6%] top-[300px]', 'right-[12%] top-[410px]', 'right-[6%] top-[520px]']
 const tagDelay = ['0s', '-1.6s', '-3s']
 
 /** Hero: the finished home in motion across the whole frame, a pale sky melting in from the top, a large white headline, project counts and a rotating seal. */
@@ -103,7 +103,7 @@ export default function Hero({ play }: Props) {
         <span className="pointer-events-none absolute -left-24 bottom-20 h-80 w-80 rounded-full bg-[#4450e0]/30 blur-[90px]" style={{ animation: 'drift 18s ease-in-out infinite' }} aria-hidden="true" />
         <span className="pointer-events-none absolute -right-10 top-1/3 h-72 w-72 rounded-full bg-[#f0c9ae]/30 blur-[90px]" style={{ animation: 'drift 22s ease-in-out -9s infinite reverse' }} aria-hidden="true" />
 
-        <div data-par="tags" className="pointer-events-none absolute inset-0 z-[5] hidden lg:block" aria-hidden="true">
+        <div data-par="tags" className="pointer-events-none absolute inset-0 z-[5] hidden min-[1440px]:block" aria-hidden="true">
           {heroStats.map((s, i) => (
             <div key={s.label} data-in="tag" className={`absolute ${tagPos[i]}`}>
               <span className="flex items-center gap-3 rounded-full border border-white/30 bg-white/15 py-2 pl-5 pr-6 text-white backdrop-blur-md" style={{ animation: `bob 6s ease-in-out ${tagDelay[i]} infinite` }}>
@@ -113,7 +113,7 @@ export default function Hero({ play }: Props) {
             </div>
           ))}
         </div>
-        <div data-par="seal" className="absolute right-[5%] top-[18%] z-[5] hidden lg:block">
+        <div data-par="seal" className="absolute right-[5%] top-[104px] z-[5] hidden min-[1440px]:block">
           <button data-in="seal" onClick={() => scrollToId('projects')} className="group relative grid h-32 w-32 place-items-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md transition-transform duration-500 hover:scale-105" aria-label="See the projects">
             <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full" style={{ animation: reduced ? undefined : 'spinSlow 22s linear infinite' }} aria-hidden="true">
               <defs>
@@ -143,6 +143,14 @@ export default function Hero({ play }: Props) {
               <Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary on-dark">{hero.primary}</Magnetic>
               <Magnetic as="button" onClick={() => scrollToId('about')} className="btn-ghost on-dark text-white">{hero.secondary}</Magnetic>
             </div>
+            <ul data-c className="mt-7 flex flex-wrap gap-2.5 min-[1440px]:hidden" aria-label="Key numbers">
+                {heroStats.map((f) => (
+                  <li key={f.label} className="flex items-center gap-2.5 rounded-full border border-white/30 bg-white/15 py-1.5 pl-4 pr-5 backdrop-blur-md">
+                    <span className="text-[1.15rem] font-semibold leading-none tracking-tight">{f.value}</span>
+                    <span className="text-[0.8rem] font-medium text-white/85">{f.label}</span>
+                  </li>
+                ))}
+              </ul>
           </div>
         </div>
 

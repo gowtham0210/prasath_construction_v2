@@ -44,23 +44,23 @@ export const whyChoose = [
 export const trust = {
   chip: 'Why owners trust us',
   lines: ['10 years. 320 homes.', 'Zero broken promises.'],
-  text: "We bring the rigor of a corporate construction firm and the warmth of a family-run studio. Fixed cost contracts, 10-year structural warranty, milestone-based payments — that's how we earned the trust of 1,240+ Tamilnadu families.",
+  text: "We bring the rigor of a corporate construction firm and the warmth of a family-run studio. Fixed cost contracts, 10-year structural warranty, milestone-based payments — that's how we earned the trust of 320+ Tamilnadu families.",
   badges: ['ISO 9001 Certified', 'On-time Delivery', '10-year Warranty'],
 }
 
 export const stats = [
   { value: 320, suffix: '+', label: 'Homes Delivered', note: 'Across Tamilnadu & suburbs', image: 'building' },
-  { value: 15, suffix: '+', label: 'Areas Covered', note: 'ECR, OMR, Tambaram & more', image: 'crane' },
+  { value: 15, suffix: '+', label: 'Areas Covered', note: 'Dharmapuri & the towns around it', image: 'crane' },
   { value: 98, suffix: '%', label: 'On-Time Delivery', note: 'Last 24 months', image: 'helmet' },
   { value: 4.9, suffix: '★', label: 'Owner Rating', note: 'Avg. across 280+ reviews', image: 'building', decimals: 1 },
 ]
 
 export const timeline = [
-  { year: '2014', title: 'Founded with 3 architects', text: 'Started in a small Adyar office with a vision to bring transparency to home construction.' },
+  { year: '2014', title: 'Founded with 3 architects', text: 'Started with a vision to bring transparency to home construction.' },
   { year: '2017', title: '100th home delivered', text: 'Built our project tracking app to keep owners updated daily.' },
   { year: '2019', title: 'Interior design studio launched', text: 'End-to-end turnkey delivery from foundation to furniture.' },
   { year: '2022', title: 'ISO 9001 certification', text: 'Formalised quality systems across all 40+ active projects.' },
-  { year: '2025', title: '320+ homes & counting', text: 'Now serving across Tamilnadu, ECR, OMR, and Tambaram metropolitan zones.' },
+  { year: '2025', title: '320+ homes & counting', text: 'Now serving across Tamilnadu, from Dharmapuri and the towns around it.' },
 ]
 
 export const siteVisit = {
@@ -86,6 +86,7 @@ export interface Package {
   text: string
   price: string
   popular?: boolean
+  /** only what sets this package apart; items every package shares are in `packagesCommon` */
   features: string[]
   cta: string
 }
@@ -96,37 +97,57 @@ export const packagesIntro = {
   text: 'Per sq.ft pricing on built-up area. Includes design, approvals, materials, labor, and supervision. Pick what fits — upgrade anytime.',
 }
 
+/** Included in all three packages. */
+export const packagesCommon = ['Branded electricals and interiors', 'Slab to slab work']
+
+/**
+ * Things a package does NOT cover (for example compound wall, sump, approval fees).
+ * Left empty on purpose: add only what the company confirms, and the cards and table show it automatically.
+ */
+export const packagesNotIncluded: string[] = []
+
 export const packages: Package[] = [
   {
     tag: 'Smart Start',
-    name: 'Budget Friendly',
+    name: 'Essential',
     text: 'Quality construction with smart material choices for value-conscious owners.',
     price: '1,899',
-    features: ['RCC framed structure', 'Standard branded materials', 'Vitrified flooring', 'Basic electrical & plumbing', 'Branded Electricals and Interiors', 'Slab to slab work'],
+    features: ['RCC framed structure', 'Standard branded materials', 'Vitrified flooring', 'Basic electrical & plumbing'],
     cta: 'Get a Quote',
   },
   {
     tag: 'Most popular',
-    name: 'Value for Money',
+    name: 'Signature',
     text: 'Our most-chosen package — balanced finishes, premium fittings, full transparency.',
     price: '2,050',
     popular: true,
-    features: ['Premium branded materials', 'Designer vitrified tiles', 'Modular kitchen base', 'Premium electrical (Anchor)', 'Branded Electricals and Interiors', 'Slab to slab work'],
-    cta: 'Choose this Package',
+    features: ['Premium branded materials', 'Designer vitrified tiles', 'Modular kitchen base', 'Premium electrical (Anchor)'],
+    cta: 'Get a Quote',
   },
   {
-    tag: 'Luxury',
-    name: "Builder's Choice",
+    tag: 'Top tier',
+    name: 'Luxury',
     text: 'Architect-curated finishes, premium imported sanitary, and luxury detailing.',
     price: '2,599',
-    features: ['Imported tiles & marble options', 'Luxury sanitary (Kohler/Grohe)', 'Smart-home wiring', 'Full interior package add-on', 'Branded Electricals and Interiors', 'Slab to slab work', 'Dedicated project manager'],
+    features: ['Imported tiles & marble options', 'Luxury sanitary (Kohler/Grohe)', 'Smart-home wiring', 'Full interior package add-on', 'Dedicated project manager'],
     cta: 'Get a Quote',
   },
 ]
 
+/** Side-by-side rows for the comparison table. A dash (null) means the package does not list that item — ask us to confirm. */
+export const packagesCompare: { label: string; cells: (string | null)[] }[] = [
+  { label: 'Structure', cells: ['RCC framed structure', null, null] },
+  { label: 'Materials', cells: ['Standard branded materials', 'Premium branded materials', 'Architect-curated finishes'] },
+  { label: 'Flooring', cells: ['Vitrified flooring', 'Designer vitrified tiles', 'Imported tiles & marble options'] },
+  { label: 'Kitchen & interiors', cells: [null, 'Modular kitchen base', 'Full interior package add-on'] },
+  { label: 'Electrical & plumbing', cells: ['Basic electrical & plumbing', 'Premium electrical (Anchor)', 'Smart-home wiring'] },
+  { label: 'Sanitary', cells: [null, null, 'Luxury sanitary (Kohler/Grohe)'] },
+  { label: 'Project management', cells: [null, null, 'Dedicated project manager'] },
+]
+
 export const videos = [
   { id: 'rF1vYKGXMIQ', title: 'Choosing the Perfect Tiles for Your Dream Home' },
-  { id: 'yFS1YVkogmg', title: 'Choosing the Perfect Tiles for a Dream Home' },
+  { id: 'yFS1YVkogmg', title: 'Choosing the Perfect Tiles for a Dream Home (Part 2)' },
   { id: 'r1qZwFGWjGE', title: 'This Is What Strong Foundations Look Like!' },
   { id: 'XdlCaH6wp30', title: 'A Dream Taking Shape, One Detail at a Time' },
   { id: 'nrKN_wj1_OE', title: 'They Had a Dream. We Built It.' },

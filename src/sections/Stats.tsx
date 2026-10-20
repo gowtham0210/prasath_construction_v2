@@ -34,13 +34,13 @@ export default function Stats({ id = 'stats' }: { id?: string }) {
         <Stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6" gap={0.12}>
           {stats.map((s) => (
             <article key={s.label} className="card card-hover group relative overflow-hidden p-7 text-center">
-              <img src={`/prasath/stat_${s.image}.png`} alt="" width={72} height={72} loading="lazy" className="pointer-events-none absolute -right-3 -top-3 h-24 w-24 object-contain opacity-20 transition-all duration-700 group-hover:-rotate-6 group-hover:scale-110 group-hover:opacity-40" aria-hidden="true" />
+              <img src={`/prasath/stat_${s.image}.png`} alt="" width={72} height={72} loading="lazy" className="pointer-events-none relative mx-auto mb-5 h-16 w-16 object-contain opacity-90 transition-transform duration-700 group-hover:-rotate-6 group-hover:scale-110" aria-hidden="true" />
               <p className="relative text-[clamp(2.8rem,5vw,4.2rem)] font-semibold leading-none tracking-tight">
                 <span data-count={s.value} data-decimals={s.decimals ?? 0}>{reduced ? s.value : '0'}</span>
                 <span className="accent-word">{s.suffix}</span>
               </p>
               <p className="relative mt-3 text-[1.05rem] font-medium">{s.label}</p>
-              <p className="relative mt-1 text-sm text-graphite/55">{s.note}</p>
+              <p className="relative mt-1 text-sm text-ink-2">{s.note}</p>
             </article>
           ))}
         </Stagger>

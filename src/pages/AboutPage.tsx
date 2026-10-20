@@ -80,8 +80,8 @@ export default function AboutPage() {
           <span className="pointer-events-none absolute -right-10 top-1/3 h-72 w-72 rounded-full bg-[#f0c9ae]/30 blur-[90px]" style={{ animation: 'drift 22s ease-in-out -9s infinite reverse' }} aria-hidden="true" />
 
           {/* floating facts + rotating seal (desktop) */}
-          <div data-par="tags" className="pointer-events-none absolute inset-0 z-[5] hidden lg:block" aria-hidden="true">
-            {[{ v: '2014', l: 'Founded', pos: 'right-[6%] top-[27%]', d: '0s' }, { v: '320+', l: 'Homes delivered', pos: 'right-[13%] top-[41%]', d: '-1.6s' }, { v: '1,240+', l: 'Happy owners', pos: 'right-[6%] top-[55%]', d: '-3s' }].map((t) => (
+          <div data-par="tags" className="pointer-events-none absolute inset-0 z-[5] hidden min-[1440px]:block" aria-hidden="true">
+            {[{ v: '2014', l: 'Founded', pos: 'right-[6%] top-[270px]', d: '0s' }, { v: '320+', l: 'Homes delivered', pos: 'right-[13%] top-[380px]', d: '-1.6s' }, { v: '4.9★', l: 'Owner rating', pos: 'right-[6%] top-[490px]', d: '-3s' }].map((t) => (
               <div key={t.l} data-tag className={`absolute ${t.pos}`}>
                 <span className="flex items-center gap-3 rounded-full border border-white/30 bg-white/15 py-2 pl-5 pr-6 backdrop-blur-md" style={{ animation: `bob 6s ease-in-out ${t.d} infinite` }}>
                   <span className="text-[1.5rem] font-semibold leading-none tracking-tight">{t.v}</span>
@@ -90,7 +90,7 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-          <div data-par="seal" className="absolute right-[5%] top-[11%] z-[5] hidden lg:block">
+          <div data-par="seal" className="absolute right-[5%] top-[104px] z-[5] hidden min-[1440px]:block">
             <button data-seal onClick={() => scrollToId('about-mvv')} className="group relative grid h-32 w-32 place-items-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md transition-transform duration-500 hover:scale-105" aria-label="Read our story">
               <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full" style={{ animation: reduced ? undefined : 'spinSlow 22s linear infinite' }} aria-hidden="true">
                 <defs><path id="about-seal" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0" /></defs>
@@ -104,7 +104,7 @@ export default function AboutPage() {
           <div className="relative z-10 flex min-h-[inherit] flex-col justify-start px-5 pb-16 pt-28 sm:px-9 lg:px-[clamp(28px,4.5vw,72px)] lg:pb-20 lg:pt-28">
             <div data-words className="max-w-[56rem]">
               <nav data-c aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/70">
-                <a href="#" onClick={(e) => { e.preventDefault(); scrollToId('top') }} className="link-line hover:text-white">Home</a>
+                <a href="/" className="link-line hover:text-white">Home</a>
                 <span aria-hidden="true">/</span>
                 <span className="text-white">About</span>
               </nav>
@@ -128,6 +128,14 @@ export default function AboutPage() {
                 <Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary on-dark">Book a Consultation</Magnetic>
                 <Magnetic as="button" onClick={() => scrollToId('projects')} className="btn-ghost on-dark text-white">See our projects</Magnetic>
               </div>
+              <ul data-c className="mt-7 flex flex-wrap gap-2.5 min-[1440px]:hidden" aria-label="Key numbers">
+                {[{ v: '2014', l: 'Founded' }, { v: '320+', l: 'Homes delivered' }, { v: '4.9★', l: 'Owner rating' }].map((f) => (
+                  <li key={f.l} className="flex items-center gap-2.5 rounded-full border border-white/30 bg-white/15 py-1.5 pl-4 pr-5 backdrop-blur-md">
+                    <span className="text-[1.15rem] font-semibold leading-none tracking-tight">{f.v}</span>
+                    <span className="text-[0.8rem] font-medium text-white/85">{f.l}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -136,9 +144,9 @@ export default function AboutPage() {
       <section id="about-mvv" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="about-mvv-title">
         <div className="container-x">
           <SectionHead id="about-mvv-title" chip={aboutIntro.chip} lines={aboutIntro.lines} accent={['home.']} text={aboutIntro.text} />
-          <Stagger className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8" gap={0.14}>
+          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8" gap={0.14}>
             {mvv.map((m, i) => (
-              <article key={m.title} onPointerMove={move} className="card card-hover group relative overflow-hidden !rounded-[32px] p-3">
+              <article key={m.title} onPointerMove={move} className="card card-hover group relative overflow-hidden !rounded-[32px] p-3 last:md:col-span-2 last:lg:col-span-1">
                 <span className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={{ background: 'radial-gradient(360px circle at var(--gx,50%) var(--gy,50%), rgba(143,179,234,0.28), transparent 60%)' }} aria-hidden="true" />
                 <div className="relative aspect-[4/3] overflow-hidden rounded-[24px]">
                   <Still id={m.image} className="h-full w-full !rounded-none transition-transform duration-[1500ms] ease-[var(--ease-expo)] group-hover:scale-[1.07]" />
@@ -147,7 +155,7 @@ export default function AboutPage() {
                 <div className="p-6">
                   <p className="eyebrow text-olive">{m.tag}</p>
                   <h3 className="mt-2 text-[1.5rem] font-medium tracking-tight">{m.title}</h3>
-                  <p className="mt-3 text-[0.95rem] leading-relaxed text-graphite/65">{m.text}</p>
+                  <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-2">{m.text}</p>
                 </div>
               </article>
             ))}
@@ -173,7 +181,7 @@ export default function AboutPage() {
             <h2 id="about-trust-title" className="display mt-5 text-[clamp(2.2rem,4.4vw,4.2rem)] !leading-[1.02]">
               {trust.lines[0]} <span className="accent-word">{trust.lines[1]}</span>
             </h2>
-            <Reveal className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-graphite/65" delay={0.1}>{trust.text}</Reveal>
+            <Reveal className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-2" delay={0.1}>{trust.text}</Reveal>
             <Reveal className="mt-7 flex flex-wrap gap-2.5" delay={0.15}>
               {trust.badges.map((b) => (
                 <span key={b} className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-medium shadow-[0_12px_30px_-20px_rgba(40,60,110,0.6)] backdrop-blur">
@@ -187,7 +195,7 @@ export default function AboutPage() {
                 <div key={s.label} className="card !rounded-[24px] p-5">
                   <p className="text-[2rem] font-semibold leading-none tracking-tight">{s.value}<span className="accent-word">{s.suffix}</span></p>
                   <p className="mt-2 text-sm font-medium">{s.label}</p>
-                  <p className="text-xs text-graphite/50">{s.note}</p>
+                  <p className="text-xs text-ink-2">{s.note}</p>
                 </div>
               ))}
             </Stagger>
@@ -202,7 +210,7 @@ export default function AboutPage() {
               <div>
                 <span className="chip">{siteVisit.chip}</span>
                 <h2 id="about-visit-title" className="display mt-5 text-[clamp(1.9rem,3.6vw,3.2rem)] !leading-[1.05]">{siteVisit.title}</h2>
-                <p className="mt-4 max-w-md text-graphite/65">{siteVisit.text}</p>
+                <p className="mt-4 max-w-md text-ink-2">{siteVisit.text}</p>
                 <div className="mt-7">
                   <Magnetic as="button" onClick={() => { setEnquiryPrefill('House Construction'); scrollToId('contact') }} className="btn-primary">{siteVisit.cta}</Magnetic>
                 </div>
@@ -225,13 +233,13 @@ export default function AboutPage() {
           <SectionHead id="about-gallery-title" chip="Gallery" lines={['Every site', 'tells a story.']} accent={['story.']} text="Foundations, framing, finishing and handover — a real look at how we build, straight from our sites across Tamilnadu." />
           <Stagger className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-5" gap={0.07}>
             {galleryIds.slice(0, 8).map((id) => (
-              <a key={id} href="#/gallery" className="group relative aspect-square overflow-hidden rounded-[24px] shadow-[0_24px_60px_-40px_rgba(40,60,110,0.6)]">
+              <a key={id} href="/gallery" className="group relative aspect-square overflow-hidden rounded-[24px] shadow-[0_24px_60px_-40px_rgba(40,60,110,0.6)]">
                 <Still id={id} className="h-full w-full !rounded-none transition-transform duration-[1400ms] ease-[var(--ease-expo)] group-hover:scale-[1.1]" />
               </a>
             ))}
           </Stagger>
           <Reveal className="mt-10 text-center">
-            <a href="#/gallery" className="btn-primary">View Full Gallery</a>
+            <a href="/gallery" className="btn-primary">View Full Gallery</a>
           </Reveal>
         </div>
       </section>
@@ -248,7 +256,7 @@ export default function AboutPage() {
                   <h2 id="about-cta-title" className="display mt-5 text-[clamp(2rem,4vw,3.6rem)] !leading-[1.04]">
                     Your dream home is <span className="accent-word">just one conversation away.</span>
                   </h2>
-                  <p className="mt-4 max-w-md text-graphite/65">{consultation.text}</p>
+                  <p className="mt-4 max-w-md text-ink-2">{consultation.text}</p>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary">{consultation.cta}</Magnetic>
                     <Magnetic as="button" onClick={() => scrollToId('packages')} className="btn-ghost">View Packages</Magnetic>

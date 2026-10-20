@@ -18,7 +18,6 @@ export default function PrivacyPolicy({ onClose }: { onClose: () => void }) {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
     ref.current?.focus()
-    document.title = `Privacy policy — ${company.name}`
     return () => {
       document.documentElement.style.overflow = prev
       startScroll()
@@ -67,7 +66,7 @@ export default function PrivacyPolicy({ onClose }: { onClose: () => void }) {
             <h2 className="font-serif text-2xl text-graphite">Cookies and analytics</h2>
             <p className="mt-3">This site does not set tracking cookies of its own. If analytics or third-party embeds are added later, this notice will be updated.</p>
           </section>
-          <p className="text-sm text-graphite/50">Last updated {new Date().getFullYear()}. This is a template notice; the company should review it against its actual data practices and applicable law.</p>
+          <p className="text-sm text-ink-2">Last updated {new Date().getFullYear()}. This is a template notice; the company should review it against its actual data practices and applicable law.</p>
         </div>
       </div>
     </motion.div>

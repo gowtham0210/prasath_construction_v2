@@ -4,7 +4,8 @@ import { ArrowUpRight, Menu, X } from 'lucide-react'
 import Logo from './Logo'
 import Magnetic from './Magnetic'
 import { company, whatsappLink } from '../config/company'
-import { ScrollTrigger, scrollToId, startScroll, stopScroll } from '../lib/smooth'
+import { startScroll, stopScroll } from '../lib/smooth'
+import { useRoute } from '../hooks/useRoute'
 
 const links = [
   { id: 'top', label: 'Home' },
@@ -18,9 +19,10 @@ const links = [
 
 export default function Nav({ visible }: { visible: boolean }) {
   const [solid, setSolid] = useState(false)
-  const [active, setActive] = useState('top')
+  const { route } = useRoute()
+  const active = route && route.kind !== 'project' && route.kind !== 'privacy' ? (route.kind === 'service' ? 'services' : route.kind) : 'top'
   const [open, setOpen] = useState(false)
-  const firstLink = useRef<HTMLButtonElement | null>(null)
+  const firstLink = useRef<HTMLAnchorElement | null>(null)
 
   useEffect(() => {
     const on = () => setSolid(window.scrollY > 90)
@@ -29,41 +31,24 @@ export default function Nav({ visible }: { visible: boolean }) {
     return () => window.removeEventListener('scroll', on)
   }, [])
 
-  // the underline marks the page you are on: it stays on Home however far you scroll the home page
-  useEffect(() => {
-    const onHash = () => {
-      const h = location.hash
-      const page = h.match(/^#\/(about|services|projects|gallery|packages|contact)/)
-      if (page) {
-        setActive(page[1])
-      } else if (!/^#\/(project|privacy)/.test(h)) {
-        setActive('top')
-      }
-    }
-    onHash()
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
-
   // full-screen menu: lock scrolling, close on Escape
   useEffect(() => {
     if (!open) return
     stopScroll()
     document.documentElement.style.overflow = 'hidden'
+    document.documentElement.dataset.menu = 'open'
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
     window.addEventListener('keydown', onKey)
     firstLink.current?.focus()
     return () => {
       startScroll()
       document.documentElement.style.overflow = ''
+      delete document.documentElement.dataset.menu
       window.removeEventListener('keydown', onKey)
     }
   }, [open])
 
-  const go = (id: string) => {
-    setOpen(false)
-    setTimeout(() => scrollToId(id), open ? 450 : 0)
-  }
+  const hrefOf = (id: string) => (id === 'top' ? '/' : `/${id}`)
 
   return (
     <>
@@ -77,32 +62,32 @@ export default function Nav({ visible }: { visible: boolean }) {
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
         <nav className="container-x flex h-[76px] items-center justify-between gap-6" aria-label="Primary">
-          <button onClick={() => go('top')} aria-label={`${company.name} — back to top`} className="shrink-0">
+          <a href="/" onClick={() => setOpen(false)} aria-label={`${company.name} — home`} className="shrink-0">
             <Logo />
-          </button>
+          </a>
 
-          <ul className="hidden items-center gap-9 lg:flex">
+          <ul className="hidden items-center gap-7 min-[1280px]:flex">
             {links.map((l) => (
               <li key={l.id} className="relative">
-                <button
-                  onClick={() => go(l.id)}
-                  aria-current={active === l.id ? 'true' : undefined}
-                  className={`py-2 text-[0.95rem] font-medium transition-colors duration-300 ${active === l.id ? 'text-graphite' : 'text-graphite/55 hover:text-graphite'}`}
+                <a
+                  href={hrefOf(l.id)}
+                  aria-current={active === l.id ? 'page' : undefined}
+                  className={`py-2 text-[0.95rem] font-medium transition-colors duration-300 ${active === l.id ? 'text-graphite' : 'text-ink-2 hover:text-graphite'}`}
                 >
                   {l.label}
-                </button>
+                </a>
                 {active === l.id && <motion.span layoutId="nav-indicator" className="absolute inset-x-0 -bottom-0.5 h-px bg-olive" transition={{ type: 'spring', stiffness: 380, damping: 36 }} />}
               </li>
             ))}
           </ul>
 
           <div className="flex items-center gap-3">
-            <Magnetic as="button" onClick={() => go('contact')} className="btn-primary hidden sm:inline-flex">
+            <Magnetic as="a" href="/contact" className="btn-primary hidden whitespace-nowrap sm:inline-flex">
               Book a Consultation
               <ArrowUpRight size={15} strokeWidth={1.6} />
             </Magnetic>
             <button
-              className="grid h-11 w-11 place-items-center rounded-full border border-current/25 lg:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full border border-current/25 min-[1280px]:hidden"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-menu"
@@ -135,19 +120,19 @@ export default function Nav({ visible }: { visible: boolean }) {
                   animate={{ y: 0, opacity: 1, transition: { delay: 0.3 + i * 0.06, duration: 0.8, ease: [0.16, 1, 0.3, 1] } }}
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
                 >
-                  <button ref={i === 0 ? firstLink : undefined} onClick={() => go(l.id)} className="flex w-full items-baseline gap-5 py-2 text-left">
+                  <a ref={i === 0 ? firstLink : undefined} href={hrefOf(l.id)} onClick={() => setOpen(false)} className="flex w-full items-baseline gap-5 py-2 text-left">
                     <span className="eyebrow w-8 text-olive">{String(i + 1).padStart(2, '0')}</span>
                     <span className="display text-[clamp(2.4rem,11vw,4rem)]">{l.label}</span>
-                  </button>
+                  </a>
                 </motion.li>
               ))}
             </ul>
             <div className="mt-10 flex flex-col gap-5">
-              <button onClick={() => go('contact')} className="btn-primary justify-between">
+              <a href="/contact" onClick={() => setOpen(false)} className="btn-primary justify-between">
                 Book a Consultation
                 <ArrowUpRight size={16} strokeWidth={1.6} />
-              </button>
-              <div className="space-y-1 text-sm text-graphite/60">
+              </a>
+              <div className="space-y-1 text-sm text-ink-2">
                 {company.email && <a href={`mailto:${company.email}`} className="block">{company.email}</a>}
                 {company.phone && <a href={`tel:${company.phone.replace(/\s/g, '')}`} className="block">{company.phone}</a>}
                 {whatsappLink() && <a href={whatsappLink()} target="_blank" rel="noreferrer" className="block">WhatsApp us</a>}

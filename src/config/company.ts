@@ -32,7 +32,7 @@ export const company: CompanyConfig = {
   phone2: '+91 93449 58295',
   hours: 'Mon – Sat, 9 AM – 6 PM',
   whatsapp: import.meta.env.VITE_WHATSAPP_NUMBER ?? '919688444573',
-  address: import.meta.env.VITE_COMPANY_ADDRESS ?? 'No.59/A, Vasugoundar street/n, Dharmapuri - 636701',
+  address: import.meta.env.VITE_COMPANY_ADDRESS ?? 'No.59/A, Vasugoundar Street, Dharmapuri - 636701',
   serviceAreas: (import.meta.env.VITE_SERVICE_AREAS ?? 'Dharmapuri, Palacode, Harur, Pennagaram, Nallampalli, Morappur, Karimangalam, Papireddipatti').split(',').map((s: string) => s.trim()).filter(Boolean),
   social: { instagram: '', facebook: '', linkedin: '', youtube: 'https://www.youtube.com/@PrasathConstructions' },
   siteUrl: import.meta.env.VITE_SITE_URL ?? 'https://example.com',

@@ -1,4 +1,8 @@
 import { company } from '../config/company'
+import meta from '../data/pageMeta.json'
+import { projects } from '../data/projects'
+import { services } from '../data/services'
+import type { Route } from './router'
 
 /** Emits LocalBusiness structured data ONLY when real company details have been supplied and marked verified. */
 export function injectStructuredData() {
@@ -32,4 +36,34 @@ export function setCanonical() {
     document.head.appendChild(link)
   }
   link.href = company.siteUrl.replace(/\/$/, '') + '/'
+}
+
+const setMeta = (selector: string, attr: 'name' | 'property', key: string, content: string) => {
+  let el = document.querySelector<HTMLMetaElement>(selector)
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attr, key)
+    document.head.appendChild(el)
+  }
+  el.content = content
+}
+
+/** Gives every page its own title, description and canonical address (also used for sharing previews). */
+export function setPageMeta(route: Route) {
+  let m: { path: string; title: string; description: string } = meta.home
+  if (route?.kind === 'project') {
+    const p = projects.find((x) => x.slug === route.slug)
+    m = p
+      ? { path: `/projects/${p.slug}`, title: `${p.name} — ${p.location} | Prasanth Construction`, description: `${p.name} in ${p.location}: ${p.concept}. ${p.overview}`.slice(0, 300) }
+      : meta.projects
+  } else if (route?.kind === 'service') {
+    const sv = services.find((x) => x.id === route.slug)
+    m = sv ? { path: `/services/${sv.id}`, title: `${sv.title} | Prasanth Construction`, description: `${sv.headline} ${sv.summary}`.slice(0, 300) } : meta.services
+  } else if (route) m = meta[route.kind]
+  document.title = m.title
+  setMeta('meta[name="description"]', 'name', 'description', m.description)
+  setMeta('meta[property="og:title"]', 'property', 'og:title', m.title)
+  setMeta('meta[property="og:description"]', 'property', 'og:description', m.description)
+  const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+  if (link) link.href = company.siteUrl.replace(/\/$/, '') + (m.path === '/' ? '/' : m.path)
 }

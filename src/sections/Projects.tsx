@@ -58,7 +58,7 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
                 role="tab"
                 aria-selected={filter === f}
                 onClick={() => setFilter(f)}
-                className={`relative shrink-0 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 ${filter === f ? 'bg-graphite text-white shadow-[0_12px_30px_-12px_rgba(15,18,24,0.6)]' : 'bg-white/70 text-graphite/65 hover:bg-white hover:text-graphite'}`}
+                className={`relative shrink-0 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 ${filter === f ? 'bg-graphite text-white shadow-[0_12px_30px_-12px_rgba(15,18,24,0.6)]' : 'bg-white/70 text-ink-2 hover:bg-white hover:text-graphite'}`}
               >
                 {f}
               </button>
@@ -118,7 +118,7 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
                         <div className="flex items-end justify-between gap-4">
                           <div className="min-w-0">
                             <h3 className="text-[clamp(1.4rem,2.6vw,2.4rem)] font-medium leading-tight tracking-tight">{cur.name}</h3>
-                            <p className="mt-1 hidden max-w-lg text-sm text-graphite/60 sm:block">{cur.concept}</p>
+                            <p className="mt-1 hidden max-w-lg text-sm text-ink-2 sm:block">{cur.concept}</p>
                           </div>
                           <button onClick={() => onOpen(cur.slug)} className="btn-primary shrink-0" aria-label={`View project: ${cur.name}`}>View</button>
                         </div>
@@ -128,7 +128,7 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
                             { icon: MapPin, text: cur.location },
                             { icon: Ruler, text: cur.builtUp.replace(' (concept)', '') },
                           ].map(({ icon: Icon, text }, k) => (
-                            <motion.span key={text} initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.75 + k * 0.1, duration: 0.7, ease }} className="inline-flex items-center gap-1.5 rounded-full bg-graphite/5 px-3 py-1.5 text-xs font-medium text-graphite/70">
+                            <motion.span key={text} initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.75 + k * 0.1, duration: 0.7, ease }} className="inline-flex items-center gap-1.5 rounded-full bg-graphite/5 px-3 py-1.5 text-xs font-medium text-ink-2">
                               <Icon size={13} strokeWidth={1.7} />
                               {text}
                             </motion.span>
@@ -146,7 +146,7 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
                   {list.map((p, i) => {
                     const on = i === idx
                     return (
-                      <li key={p.slug}>
+                      <li key={p.slug} className={on ? 'max-lg:hidden' : ''}>
                         <button
                           onClick={() => {
                             setActive(i)
@@ -159,8 +159,8 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
                             <Still id={p.cover} className="h-full w-full !rounded-none" />
                           </span>
                           <span className="min-w-0 flex-1">
-                            <span className="eyebrow block text-[0.62rem] text-graphite/45">{String(i + 1).padStart(2, '0')} · {p.category}</span>
-                            <span className={`mt-0.5 block truncate text-[1.05rem] font-medium tracking-tight transition-colors duration-500 ${on ? 'text-graphite' : 'text-graphite/65 group-hover:text-graphite'}`}>{p.name}</span>
+                            <span className="eyebrow block text-[0.62rem] text-ink-2">{String(i + 1).padStart(2, '0')} · {p.category}</span>
+                            <span className={`mt-0.5 block truncate text-[1.05rem] font-medium tracking-tight transition-colors duration-500 ${on ? 'text-graphite' : 'text-ink-2 group-hover:text-graphite'}`}>{p.name}</span>
                           </span>
                           <ArrowUpRight size={18} strokeWidth={1.6} className={`shrink-0 transition-all duration-500 ${on ? 'translate-x-0 text-olive opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-60'}`} />
                           {on && !reduced && list.length > 1 && (
@@ -183,16 +183,16 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
                   <button onClick={() => { go(idx + 1); setPaused(true) }} className="grid h-12 w-12 place-items-center rounded-full bg-white/80 transition-all duration-500 hover:translate-x-0.5 hover:bg-graphite hover:text-white" aria-label="Next project">
                     <ArrowRight size={18} strokeWidth={1.6} />
                   </button>
-                  <span className="ml-1 text-xs text-graphite/45">{paused ? 'Paused' : 'Auto-playing'}</span>
+                  <span className="ml-1 text-xs text-ink-2">{paused ? 'Paused' : 'Auto-playing'}</span>
                 </div>
               </div>
             </div>
           </Reveal>
         ) : (
-          <p className="py-20 text-center text-graphite/60">No projects in this category yet.</p>
+          <p className="py-20 text-center text-ink-2">No projects in this category yet.</p>
         )}
         <Reveal className="mt-10 text-center">
-          <a href="#/projects" className="btn-primary">More Projects</a>
+          <a href="/projects" className="btn-primary">More Projects</a>
         </Reveal>
       </div>
     </section>

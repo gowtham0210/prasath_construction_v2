@@ -30,7 +30,7 @@ interface Props {
   actions?: ReactNode
 }
 
-const factPos = ['right-[6%] top-[27%]', 'right-[13%] top-[41%]', 'right-[6%] top-[55%]']
+const factPos = ['right-[6%] top-[270px]', 'right-[13%] top-[380px]', 'right-[6%] top-[490px]']
 const factDelay = ['0s', '-1.6s', '-3s']
 
 /**
@@ -105,7 +105,7 @@ export default function PageHero({ id, crumb, chip, lines, accent = [], text, im
 
         {/* floating facts + rotating seal (desktop) */}
         {facts.length > 0 && (
-          <div data-par="tags" className="pointer-events-none absolute inset-0 z-[5] hidden lg:block" aria-hidden="true">
+          <div data-par="tags" className="pointer-events-none absolute inset-0 z-[5] hidden min-[1440px]:block" aria-hidden="true">
             {facts.slice(0, 3).map((f, i) => (
               <div key={f.l} data-tag className={`absolute ${factPos[i]}`}>
                 <span className="flex items-center gap-3 rounded-full border border-white/30 bg-white/15 py-2 pl-5 pr-6 backdrop-blur-md" style={{ animation: `bob 6s ease-in-out ${factDelay[i]} infinite` }}>
@@ -116,7 +116,7 @@ export default function PageHero({ id, crumb, chip, lines, accent = [], text, im
             ))}
           </div>
         )}
-        <div data-par="seal" className="absolute right-[5%] top-[11%] z-[5] hidden lg:block">
+        <div data-par="seal" className="absolute right-[5%] top-[104px] z-[5] hidden min-[1440px]:block">
           <button data-seal onClick={() => document.getElementById(sealTo)?.scrollIntoView({ behavior: 'smooth' })} className="group relative grid h-32 w-32 place-items-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md transition-transform duration-500 hover:scale-105" aria-label={`Scroll to ${crumb}`}>
             <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full" style={{ animation: reduced ? undefined : 'spinSlow 22s linear infinite' }} aria-hidden="true">
               <defs>
@@ -136,7 +136,7 @@ export default function PageHero({ id, crumb, chip, lines, accent = [], text, im
         <div className="relative z-10 flex min-h-[inherit] flex-col justify-start px-5 pb-16 pt-28 sm:px-9 lg:px-[clamp(28px,4.5vw,72px)] lg:pb-20 lg:pt-28">
           <div data-words className="max-w-[56rem]">
             <nav data-c aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/70">
-              <a href="#" onClick={(e) => { e.preventDefault(); scrollToId('top') }} className="link-line hover:text-white">Home</a>
+              <a href="/" className="link-line hover:text-white">Home</a>
               <span aria-hidden="true">/</span>
               <span className="text-white">{crumb}</span>
             </nav>
@@ -159,6 +159,14 @@ export default function PageHero({ id, crumb, chip, lines, accent = [], text, im
               </ul>
             )}
             {actions && <div data-c className="mt-8 flex flex-wrap items-center gap-3">{actions}</div>}
+            {facts.length > 0 && <ul data-c className="mt-7 flex flex-wrap gap-2.5 min-[1440px]:hidden" aria-label="Key numbers">
+                {facts.map((f) => (
+                  <li key={f.l} className="flex items-center gap-2.5 rounded-full border border-white/30 bg-white/15 py-1.5 pl-4 pr-5 backdrop-blur-md">
+                    <span className="text-[1.15rem] font-semibold leading-none tracking-tight">{f.v}</span>
+                    <span className="text-[0.8rem] font-medium text-white/85">{f.l}</span>
+                  </li>
+                ))}
+              </ul>}
           </div>
         </div>
       </div>

@@ -70,7 +70,7 @@ export default function ServicesPage() {
                     <div className={`flex flex-col justify-center p-6 sm:p-9 lg:col-span-6 lg:p-12 ${flip ? 'lg:order-1' : ''}`}>
                       <p className="eyebrow text-olive">{s.title}</p>
                       <h2 id={`svc-${s.id}`} className="display mt-3 text-[clamp(1.6rem,2.8vw,2.4rem)] !leading-[1.08]">{s.headline}</h2>
-                      <p className="mt-4 text-[0.98rem] leading-relaxed text-graphite/65">{s.summary}</p>
+                      <p className="mt-4 text-[0.98rem] leading-relaxed text-ink-2">{s.summary}</p>
                       <ul className="mt-6 space-y-3">
                         {s.points.map((p) => (
                           <li key={p} className="flex items-start gap-3 text-[0.95rem] text-graphite/80">
@@ -82,7 +82,10 @@ export default function ServicesPage() {
                         ))}
                       </ul>
                       <div className="mt-8">
-                        <Magnetic as="button" onClick={() => enquire(s.enquiryType)} className="btn-primary">Enquire about {s.title}</Magnetic>
+                        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                          <Magnetic as="a" href={`/services/${s.id}`} className="btn-primary">Learn more about {s.title}</Magnetic>
+                          <button onClick={() => enquire(s.enquiryType)} className="link-line font-medium">Get a quote</button>
+                        </div>
                       </div>
                     </div>
                   </article>
@@ -104,10 +107,10 @@ export default function ServicesPage() {
                 <h2 id="svc-cta-title" className="display mx-auto mt-5 max-w-3xl text-[clamp(2.2rem,4.8vw,4.4rem)] !leading-[1.02]">
                   Your dream home is <span className="accent-word">just one conversation away.</span>
                 </h2>
-                <p className="mx-auto mt-4 max-w-lg text-graphite/65">{consultation.text}</p>
+                <p className="mx-auto mt-4 max-w-lg text-ink-2">{consultation.text}</p>
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                   <Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary">{consultation.cta}</Magnetic>
-                  <a href="#/about" className="btn-ghost">About us</a>
+                  <a href="/about" className="btn-ghost">About us</a>
                 </div>
               </div>
             </div>

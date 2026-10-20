@@ -112,10 +112,10 @@ export default function About() {
           <h2 id="about-title" className="display mt-6 text-[clamp(2.2rem,4.8vw,4.6rem)] !leading-[1.04]" aria-label={aboutIntro.lines.join(' ')}>
             <RevealWords as="span" lines={aboutIntro.lines} italic={['home.']} stagger={0.09} />
           </h2>
-          <Reveal className="mx-auto mt-6 max-w-xl text-[1.05rem] leading-relaxed text-graphite/65" delay={0.1}>
+          <Reveal className="mx-auto mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-2" delay={0.1}>
             {aboutIntro.text}</Reveal>
           <Reveal className="mt-8" delay={0.2}>
-            <a href="#/about" className="btn-primary">Our Story</a>
+            <a href="/about" className="btn-primary">Our Story</a>
           </Reveal>
         </div>
 
@@ -149,7 +149,7 @@ export default function About() {
                     </div>
                     <div className="p-6 pb-8">
                       <h3 className="text-[1.5rem] font-medium tracking-tight"><RevealWords as="span" lines={[p.title]} stagger={0.05} delay={0.3} /></h3>
-                      <p className="mt-3 text-sm leading-relaxed text-graphite/60">{p.text}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-ink-2">{p.text}</p>
                     </div>
                     <span className="pointer-events-none absolute -inset-px rounded-[28px] opacity-0 transition-opacity duration-700 group-hover:opacity-100" style={{ background: 'conic-gradient(from 0deg, transparent 0 55%, rgba(68,80,224,0.55) 75%, rgba(240,201,174,0.7) 90%, transparent)', animation: 'spinGlow 4s linear infinite', mask: 'linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0)', WebkitMask: 'linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0)', padding: '2px' }} aria-hidden="true" />
                     <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={{ background: 'radial-gradient(420px circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,0.45), transparent 55%)' }} aria-hidden="true" />

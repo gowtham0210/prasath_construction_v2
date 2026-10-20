@@ -3,10 +3,14 @@ export interface EnquiryPayload {
   phone: string
   email: string
   projectType: string
+  /** how the owner wants to be reached first */
+  contactPref: string
   plotAvailability: string
   budget: string
   location: string
   message: string
+  /** a short enquiry from the home page: only name, phone and project type are required */
+  quick?: boolean
   /** honeypot — must stay empty */
   website?: string
 }
@@ -14,6 +18,7 @@ export interface EnquiryPayload {
 export type EnquiryErrors = Partial<Record<keyof EnquiryPayload, string>>
 
 export const projectTypes = ['House Construction', 'Interior Design', 'Turnkey Solutions', 'Architecture', 'Renovation', 'Not sure yet']
+export const contactPrefs = ['Call me', 'WhatsApp me']
 export const plotOptions = ['I own a plot', 'I am looking for a plot', 'I am renovating an existing home', 'Not decided yet']
 export const budgetOptions = ['Not decided yet', 'Under ₹50 lakh', '₹50 lakh – ₹1 crore', '₹1 crore – ₹2 crore', 'Above ₹2 crore']
 
@@ -22,10 +27,9 @@ export function validate(v: EnquiryPayload): EnquiryErrors {
   if (v.fullName.trim().length < 2) e.fullName = 'Please enter your full name.'
   const digits = v.phone.replace(/\D/g, '')
   if (digits.length < 8 || digits.length > 15) e.phone = 'Please enter a valid phone number (8–15 digits).'
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim())) e.email = 'Please enter a valid email address.'
   if (!v.projectType) e.projectType = 'Please choose a project type.'
-  if (!v.plotAvailability) e.plotAvailability = 'Please tell us about your plot.'
-  if (v.message.trim().length < 10) e.message = 'Please tell us a little about your project (at least 10 characters).'
+  // everything else is optional; email is only checked when it has been filled in
+  if (v.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim())) e.email = 'That email address does not look right. You can also leave it empty.'
   return e
 }
 

@@ -20,7 +20,7 @@ export default function SectionHead({ id, chip, lines, accent = [], text, classN
         <RevealWords as="span" lines={lines} italic={accent} stagger={0.09} />
       </h2>
       {text && (
-        <Reveal className="mt-6 max-w-xl text-[1.05rem] leading-relaxed text-graphite/65" delay={0.1}>
+        <Reveal className={`mt-6 max-w-xl text-[1.05rem] leading-relaxed text-ink-2 ${className.includes('text-center') ? 'mx-auto' : ''}`} delay={0.1}>
           {text}
         </Reveal>
       )}

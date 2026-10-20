@@ -28,7 +28,7 @@ export default function PackagesPage() {
         actions={<><Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary on-dark">Book a Consultation</Magnetic><Magnetic as="button" onClick={() => scrollToId('services')} className="btn-ghost on-dark text-white">Our services</Magnetic></>}
       />
 
-      <Packages id="packages-list" />
+      <Packages id="packages-list" compare />
 
       <ProcessBuild id="packages-process" />
 
@@ -41,7 +41,7 @@ export default function PackagesPage() {
                 <h2 id="packages-cta-title" className="display mx-auto mt-5 max-w-3xl text-[clamp(2rem,4.4vw,4rem)] !leading-[1.04]">
                   Not sure which fits? <span className="accent-word">Let’s talk it through.</span>
                 </h2>
-                <p className="mx-auto mt-4 max-w-lg text-graphite/65">{consultation.text}</p>
+                <p className="mx-auto mt-4 max-w-lg text-ink-2">{consultation.text}</p>
                 <div className="mt-8">
                   <Magnetic as="button" onClick={() => scrollToId('contact')} className="btn-primary">{consultation.cta}</Magnetic>
                 </div>

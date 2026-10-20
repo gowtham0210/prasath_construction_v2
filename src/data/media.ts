@@ -60,13 +60,30 @@ const real: Record<string, StillDef> = {
 }
 
 export const GALLERY_COUNT = 54
+
+/** What each photograph shows. Only what can be seen in the picture; no project names are guessed. */
+const kind = (n: number) => {
+  if ([6, 24, 31, 33, 36, 39, 48].includes(n)) return 'Site progress'
+  if (n === 10) return 'Site visit with owners'
+  if ([7, 8, 9, 21, 44].includes(n)) return 'Interior fit-out'
+  if ([1, 40, 41, 42, 45].includes(n)) return 'Finished home'
+  if (n === 32) return 'Multi-storey building'
+  if ([3, 4, 5, 11, 12, 13, 14, 15, 16].includes(n)) return 'Commercial concept'
+  return '3D elevation'
+}
+export const GALLERY_CAPTIONS: Record<string, string> = {}
 for (let i = 1; i <= GALLERY_COUNT; i++) {
   const n = String(i).padStart(2, '0')
-  real[`g-${n}`] = { image: `${P}/gallery/site-${n}.jpg`, alt: `Site photograph ${i}` }
+  GALLERY_CAPTIONS[`g-${n}`] = kind(i)
+  real[`g-${n}`] = { image: `${P}/gallery/site-${n}.jpg`, alt: `${kind(i)}, photograph ${i}` }
 }
 
 export const STILLS: Record<string, StillDef> = { ...BASE, ...real }
-export const galleryIds = Array.from({ length: GALLERY_COUNT }, (_, i) => `g-${String(i + 1).padStart(2, '0')}`)
+/** left out of the gallery: cafe / warehouse / commercial concepts (3-5, 11-16, 32), the same shot repeated (7, 9, 18, 38, 54) and a broken crop (19) */
+const HIDDEN = new Set([3, 4, 5, 7, 9, 11, 12, 13, 14, 15, 16, 18, 19, 32, 38, 54])
+const shown = Array.from({ length: GALLERY_COUNT }, (_, i) => i + 1).filter((n) => !HIDDEN.has(n))
+export const galleryIds = shown.map((n) => `g-${String(n).padStart(2, '0')}`)
 
 /** width / height of each gallery photograph, so its space is reserved before it loads */
-export const GALLERY_RATIOS = [0.75, 1.502, 1.502, 1.502, 1.778, 1.333, 0.75, 0.75, 0.75, 0.562, 1.502, 2.119, 1.527, 1.228, 2.085, 1.502, 1.502, 1.502, 0.666, 1.502, 1.333, 1.502, 1.502, 1.333, 1.404, 1.27, 1.502, 0.916, 1.25, 1.201, 1.333, 1.499, 0.75, 1.502, 1.502, 1.333, 1.257, 1.151, 1.333, 1.333, 1.333, 0.75, 1.502, 1.333, 1.502, 1.502, 1.502, 0.75, 1.502, 1.502, 1.502, 0.666, 1.538, 1.649]
+const ALL_RATIOS = [0.75, 1.502, 1.502, 1.502, 1.778, 1.333, 0.75, 0.75, 0.75, 0.562, 1.502, 2.119, 1.527, 1.228, 2.085, 1.502, 1.502, 1.502, 0.666, 1.502, 1.333, 1.502, 1.502, 1.333, 1.404, 1.27, 1.502, 0.916, 1.25, 1.201, 1.333, 1.499, 0.75, 1.502, 1.502, 1.333, 1.257, 1.151, 1.333, 1.333, 1.333, 0.75, 1.502, 1.333, 1.502, 1.502, 1.502, 0.75, 1.502, 1.502, 1.502, 0.666, 1.538, 1.649]
+export const GALLERY_RATIOS = shown.map((n) => ALL_RATIOS[n - 1])

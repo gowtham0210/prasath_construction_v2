@@ -1,88 +1,45 @@
-import { useMemo } from 'react'
-import { Quote } from 'lucide-react'
-import { sampleTestimonials, testimonials, type Testimonial } from '../data/testimonials'
-import type { StillId } from '../data/media'
-import Still from '../components/Still'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, Quote } from 'lucide-react'
+import { testimonials } from '../data/testimonials'
 import SectionHead from '../components/SectionHead'
 import { Reveal } from '../components/Reveal'
-import { usePrefersReducedMotion } from '../hooks/useEnv'
 
-type Item = { kind: 'photo'; id: StillId; label: string } | { kind: 'quote'; t: Testimonial; sample: boolean }
-
-const photos: { id: StillId; label: string }[] = [
-  { id: 'p-completed-3', label: 'Thendral Villa, Palacode' },
-  { id: 'g-01', label: 'On site' },
-  { id: 'p-completed-1', label: "Sanjay's House, Dharmapuri" },
-  { id: 'g-07', label: 'Interior fit-out' },
-  { id: 'p-completed-2', label: 'Kaveri Residency, Dharmapuri' },
-  { id: 'g-06', label: 'Structure rising' },
-  { id: 'p-ongoing-2', label: 'Pachai Illam, Pennagaram' },
-  { id: 'g-08', label: 'Feature wall' },
-  { id: 'p-ongoing-3', label: 'Surya Heights, Nallampalli' },
-  { id: 'g-10', label: 'Site visit' },
-  { id: 'p-ongoing-1', label: 'Senthil Towers, Harur' },
-  { id: 'g-27', label: 'Foundation work' },
-]
-
-function Card({ item }: { item: Item }) {
-  if (item.kind === 'photo') {
-    return (
-      <div className="relative mb-5 aspect-[4/3] overflow-hidden rounded-[26px] shadow-[0_24px_60px_-40px_rgba(40,60,110,0.6)]">
-        <Still id={item.id} className="h-full w-full !rounded-none" />
-        <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-white/85 py-1.5 pl-3 pr-4 text-[0.7rem] font-medium backdrop-blur">
-          <span className="h-1.5 w-1.5 rounded-full bg-olive" />
-          {item.label}
-        </span>
-      </div>
-    )
-  }
-  const { t, sample } = item
-  return (
-    <figure className="card mb-5 !rounded-[26px] p-6">
-      <Quote size={22} strokeWidth={1.6} className="text-olive" />
-      <blockquote className="mt-4 text-[1.02rem] leading-relaxed tracking-tight">{t.quote}</blockquote>
-      <figcaption className="mt-5 flex items-center gap-3">
-        <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-[#8fb3ea] to-olive text-sm font-semibold text-white">{t.name.charAt(0)}</span>
-        <span className="text-sm leading-tight">
-          <span className="block font-medium">{t.name}</span>
-          <span className="block text-graphite/50">{sample ? 'Sample feedback' : t.detail}</span>
-        </span>
-      </figcaption>
-    </figure>
-  )
-}
-
-/** One column that scrolls by itself, forever, in the background — independent of the page scroll. */
-function Column({ items, seconds, down, className = '' }: { items: Item[]; seconds: number; down?: boolean; className?: string }) {
-  const reduced = usePrefersReducedMotion()
-  return (
-    <div className={`relative h-full overflow-hidden ${className}`} aria-hidden="true">
-      <div style={reduced ? undefined : { animation: `${down ? 'colDown' : 'colUp'} ${seconds}s linear infinite`, willChange: 'transform' }}>
-        {[...items, ...items].map((it, i) => (
-          <Card key={i} item={it} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
+/**
+ * Owner feedback as a swipeable row: big cards that snap into place as you swipe, drag the scroll bar, use the arrow buttons or the arrow keys.
+ * A thin progress line shows how far along you are. Nothing moves until you move it.
+ */
 export default function Testimonials() {
-  const real = testimonials.length > 0
-  const columns = useMemo(() => {
-    const quotes: Item[] = (real ? testimonials : sampleTestimonials).map((t) => ({ kind: 'quote', t, sample: !real }))
-    const pics: Item[] = photos.map((p) => ({ kind: 'photo', ...p }))
-    // interleave photographs and feedback, then deal them out across three columns
-    const mixed: Item[] = []
-    pics.forEach((pic, i) => {
-      mixed.push(pic)
-      if (i % 2 === 1) mixed.push(quotes[(i >> 1) % quotes.length])
-    })
-    const cols: Item[][] = [[], [], []]
-    mixed.forEach((m, i) => cols[i % 3].push(m))
-    // rotate the middle column so neighbouring cards differ
-    cols[1].push(cols[1].shift() as Item)
-    return cols
-  }, [real])
+  const rail = useRef<HTMLUListElement | null>(null)
+  const [progress, setProgress] = useState(0)
+  const [edge, setEdge] = useState<'start' | 'mid' | 'end'>('start')
+
+  const measure = useCallback(() => {
+    const el = rail.current
+    if (!el) return
+    const cards = el.querySelectorAll('li')
+    const box = el.getBoundingClientRect()
+    const first = cards[0]?.getBoundingClientRect()
+    const last = cards[cards.length - 1]?.getBoundingClientRect()
+    // the row has reached an end when the first / last card is fully in view
+    const atStart = !first || first.left >= box.left - 1
+    const atEnd = !last || last.right <= box.right + 1
+    const max = el.scrollWidth - el.clientWidth
+    setProgress(max > 0 ? Math.min(1, el.scrollLeft / max) : 0)
+    setEdge(atStart ? 'start' : atEnd ? 'end' : 'mid')
+  }, [])
+
+  useEffect(() => {
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [measure])
+
+  const step = (dir: 1 | -1) => {
+    const el = rail.current
+    const card = el?.querySelector('li')
+    if (!el || !card) return
+    el.scrollBy({ left: dir * (card.getBoundingClientRect().width + 20), behavior: 'smooth' })
+  }
 
   return (
     <section id="testimonials" className="relative py-[clamp(40px,6vh,76px)] text-graphite" aria-labelledby="testimonials-title">
@@ -91,27 +48,59 @@ export default function Testimonials() {
           className="mx-auto max-w-3xl text-center [&_p]:mx-auto"
           id="testimonials-title"
           chip="Hear from our owners"
-          lines={['Loved by 1,240+', 'homeowners.']}
-          accent={['homeowners.']}
+          lines={['Rated 4.9★', 'by our owners.']}
+          accent={['owners.']}
           text="Real messages from real owners — straight from their chats with our team."
         />
 
-        <Reveal y={80} className="relative mx-auto mt-14 max-w-6xl">
-          {/* a screen-reader friendly version of what scrolls past */}
-          <ul className="sr-only">
-            {(real ? testimonials : sampleTestimonials).map((t) => (
-              <li key={t.quote}>{t.quote}{real ? ` — ${t.name}` : ' (sample feedback)'}</li>
+        <Reveal y={70} className="mt-14">
+          <ul
+            ref={rail}
+            onScroll={measure}
+            tabIndex={0}
+            aria-label="Owner feedback, scroll sideways for more"
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowRight') { e.preventDefault(); step(1) }
+              if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1) }
+            }}
+            className="no-scrollbar -mx-5 flex snap-x snap-mandatory scroll-px-5 sm:scroll-px-8 lg:scroll-px-0 gap-5 overflow-x-auto scroll-smooth px-5 pb-8 pt-3 focus-visible:outline-none sm:-mx-8 sm:px-8 lg:mx-0 lg:px-0"
+          >
+            {testimonials.map((t, n) => (
+              <li key={t.quote} className="w-[86%] shrink-0 snap-start sm:w-[58%] lg:w-[calc((100%-2.5rem)/3)]">
+                <figure className="card card-hover flex h-full flex-col !rounded-[30px] p-7 sm:p-8">
+                  <div className="flex items-center justify-between">
+                    <span className="grid h-12 w-12 place-items-center rounded-full bg-graphite">
+                      <Quote size={20} strokeWidth={1.6} className="text-white" aria-hidden="true" />
+                    </span>
+                    <span className="text-sm font-semibold tabular-nums text-ink-3" aria-hidden="true">{String(n + 1).padStart(2, '0')}</span>
+                  </div>
+                  <blockquote className="mt-6 flex-1 text-[1.1rem] leading-[1.6] tracking-tight">{t.quote}</blockquote>
+                  <figcaption className="mt-7 flex items-center gap-3 border-t border-graphite/10 pt-5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#8fb3ea] to-olive text-sm font-semibold text-white" aria-hidden="true">{t.name.charAt(0)}</span>
+                    <span className="leading-tight">
+                      <span className="block font-semibold">{t.name}</span>
+                      {t.detail && <span className="block text-sm text-ink-2">{t.detail}</span>}
+                    </span>
+                  </figcaption>
+                </figure>
+              </li>
             ))}
           </ul>
-          <div className="grid h-[640px] gap-5 [mask-image:linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)] sm:grid-cols-2 lg:h-[720px] lg:grid-cols-3 lg:gap-6">
-            <Column items={columns[0]} seconds={52} />
-            <Column items={columns[1]} seconds={64} down className="" />
-            <Column items={columns[2]} seconds={58} className="hidden lg:block" />
+
+          <div className="mt-4 flex items-center gap-5">
+            <div className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-graphite/12" aria-hidden="true">
+              <span className="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-gradient-to-r from-[#8fb3ea] to-olive transition-transform duration-300" style={{ transform: `scaleX(${0.18 + progress * 0.82})` }} />
+            </div>
+            <div className="flex gap-2">
+              <button onClick={() => step(-1)} disabled={edge === 'start'} aria-label="Previous owners" className="grid h-12 w-12 place-items-center rounded-full border border-graphite/15 bg-white transition-all hover:bg-graphite hover:text-white disabled:pointer-events-none disabled:opacity-40"><ArrowLeft size={18} strokeWidth={1.6} /></button>
+              <button onClick={() => step(1)} disabled={edge === 'end'} aria-label="Next owners" className="grid h-12 w-12 place-items-center rounded-full bg-graphite text-white transition-all hover:bg-olive disabled:pointer-events-none disabled:opacity-40"><ArrowRight size={18} strokeWidth={1.6} /></button>
+            </div>
           </div>
         </Reveal>
-        {!real && (
-          <p className="mt-6 text-center text-xs text-graphite/45">Sample feedback is shown here as a preview — it is replaced by real client words, with their permission, once available.</p>
-        )}
+
+        <Reveal className="mt-12 text-center">
+          <a href="/projects" className="btn-ghost">See the homes we've built</a>
+        </Reveal>
       </div>
     </section>
   )

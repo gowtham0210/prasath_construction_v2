@@ -18,7 +18,7 @@ export const stillSrc = (id: StillId) => STILLS[id].image ?? `/images/${id}.jpg`
 export default function Still({ id, className = '', alt, focus = '50% 50%', zoom = 1, style, priority }: Props) {
   const [loaded, setLoaded] = useState(false)
   return (
-    <div className={`relative overflow-hidden bg-[#dfe6f2] ${className}`} style={style} data-still={id}>
+    <div className={`relative overflow-hidden bg-[#dfe6f2] ${loaded ? '' : 'animate-pulse'} ${className}`} style={style} data-still={id}>
       <img
         src={stillSrc(id)}
         alt={alt ?? STILLS[id].alt}

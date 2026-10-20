@@ -83,11 +83,11 @@ export default function Splash({ onReveal, onDone }: Props) {
           ))}
         </div>
 
-        <motion.p className="text-sm text-graphite/60" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.8, duration: 0.8 }}>
+        <motion.p className="text-sm text-ink-2" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.8, duration: 0.8 }}>
           Your vision. Our foundation.
         </motion.p>
 
-        <div className="flex items-center gap-3 text-xs font-medium text-graphite/55" aria-hidden="true">
+        <div className="flex items-center gap-3 text-xs font-medium text-ink-2" aria-hidden="true">
           {['Design', 'Build', 'Handover'].map((t, i) => (
             <motion.span key={t} className="inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1.5 backdrop-blur" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.9 + i * 0.18, duration: 0.6 }}>
               <span className="h-1.5 w-1.5 rounded-full bg-olive" style={{ animation: `pulseDot 1.6s ease-out ${2 + i * 0.18}s infinite` }} />

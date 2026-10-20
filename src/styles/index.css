@@ -8,6 +8,8 @@
 @theme {
   --color-ivory: #f5f7fb;      /* paper */
   --color-graphite: #0f1218;   /* ink */
+  --color-ink-2: #4a4f5a;      /* solid secondary text, about 8:1 on white */
+  --color-ink-3: #626876;      /* solid tertiary text and placeholders, about 5.7:1 on white */
   --color-concrete: #a7b0c2;   /* muted ink tint, for secondary text on dark */
   --color-olive: #4450e0;      /* indigo accent on light backgrounds */
   --color-bronze: #7f8bff;     /* indigo accent on dark backgrounds */
@@ -52,10 +54,10 @@
 }
 
 @layer components {
-  .eyebrow { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+  .eyebrow { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
   .display { font-weight: 500; line-height: 1; letter-spacing: -0.04em; }
   .hairline { height: 1px; background: currentColor; opacity: 0.18; }
-  .container-x { width: 100%; max-width: 1360px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 56px); }
+  .container-x { width: 100%; max-width: clamp(1360px, 72vw, 1760px); margin-inline: auto; padding-inline: clamp(20px, 4vw, 56px); }
   /* fine architectural grid lines behind sections */
   .grid-lines {
     position: absolute; inset: 0; pointer-events: none;
@@ -172,3 +174,9 @@ html[data-hero='dark'] header[data-top='true'] .btn-primary { background: #fff; 
 #gallery-grid [data-tile] img { transform: scale(1.22); transition: transform 1.6s var(--ease-expo); }
 #gallery-grid [data-tile].is-in img { transform: scale(1); }
 @media (prefers-reduced-motion: reduce) { #gallery-grid [data-tile] { clip-path: none; } #gallery-grid [data-tile] img { transform: none; } }
+
+/* animated entrances start a little to the side; clip them so they can never widen the page */
+main { overflow-x: clip; }
+
+/* leave room for the phone action bar so it never covers the end of the page */
+@media (max-width: 639px) { body { padding-bottom: 76px; } }

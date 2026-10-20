@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, X } from 'lucide-react'
 import Magnetic from '../components/Magnetic'
 import PageHero from '../components/PageHero'
 import { Reveal } from '../components/Reveal'
-import { galleryIds, GALLERY_RATIOS, STILLS } from '../data/media'
+import { galleryIds, GALLERY_CAPTIONS, GALLERY_RATIOS, STILLS } from '../data/media'
 import { consultation } from '../data/prasath'
 import { gsap, scrollToId, startScroll, stopScroll } from '../lib/smooth'
 import { useIsMobile, usePrefersReducedMotion } from '../hooks/useEnv'
@@ -96,12 +96,12 @@ export default function GalleryPage() {
             {columns.map((idxs, c) => (
               <div key={c} data-col className="flex flex-col gap-4 will-change-transform lg:gap-5">
                 {idxs.map((i) => { const id = galleryIds[i]; return (
-                  <button key={id} data-tile onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden rounded-[24px] shadow-[0_24px_60px_-40px_rgba(40,60,110,0.6)]" style={{ aspectRatio: GALLERY_RATIOS[i] }} aria-label={`Open photograph ${i + 1} of ${galleryIds.length}`}>
+                  <button key={id} data-tile onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden rounded-[24px] bg-[#dfe6f2] shadow-[0_24px_60px_-40px_rgba(40,60,110,0.6)]" style={{ aspectRatio: GALLERY_RATIOS[i] }} aria-label={`Open photograph ${i + 1} of ${galleryIds.length}: ${GALLERY_CAPTIONS[id]}`}>
                     <img src={STILLS[id].image} alt={STILLS[id].alt} loading="lazy" decoding="async" className="block h-full w-full object-cover group-hover:!scale-[1.08]" />
                     <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    <span className="pointer-events-none absolute bottom-3 left-3 flex translate-y-3 items-center gap-2 rounded-full bg-white/90 py-1.5 pl-3 pr-4 text-xs font-medium opacity-0 backdrop-blur transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                      <span className="h-1.5 w-1.5 rounded-full bg-olive" />
-                      View {String(i + 1).padStart(2, '0')}
+                    <span className="pointer-events-none absolute bottom-3 left-3 flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full bg-white/90 py-1.5 pl-3 pr-4 text-xs font-medium text-graphite backdrop-blur">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-olive" />
+                      <span className="truncate">{GALLERY_CAPTIONS[id]}</span>
                     </span>
                   </button>
                 ) })}
@@ -142,7 +142,7 @@ export default function GalleryPage() {
               <ArrowRight size={18} strokeWidth={1.6} />
             </button>
             <motion.img key={open} src={STILLS[galleryIds[open]].image} alt={STILLS[galleryIds[open]].alt} className="max-h-[86vh] max-w-[92vw] rounded-[20px] object-contain shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)]" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} onClick={(e) => e.stopPropagation()} />
-            <p className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-medium text-white backdrop-blur">{open + 1} / {galleryIds.length}</p>
+            <p className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-medium text-white backdrop-blur">{GALLERY_CAPTIONS[galleryIds[open]]} · {open + 1} / {galleryIds.length}</p>
           </motion.div>
         )}
       </AnimatePresence>

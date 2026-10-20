@@ -89,7 +89,7 @@ function Ride() {
                 </div>
                 <div className="p-6">
                   <h3 className="text-[1.5rem] font-medium tracking-tight">{t.title}</h3>
-                  <p className="mt-2 text-[0.98rem] leading-relaxed text-graphite/60">{t.text}</p>
+                  <p className="mt-2 text-[0.98rem] leading-relaxed text-ink-2">{t.text}</p>
                 </div>
               </div>
             </article>
@@ -112,7 +112,7 @@ function Ride() {
                 <li key={t.year} className="relative" style={{ width: 0 }}>
                   <button onClick={() => goTo(i)} aria-current={i === active ? 'step' : undefined} className="group absolute left-0 top-0 flex -translate-x-1/2 flex-col items-center gap-2">
                     <span className={`mt-[19px] block h-3.5 w-3.5 rounded-full border-2 transition-all duration-500 ${i <= active ? 'scale-110 border-olive bg-olive' : 'border-graphite/30 bg-white'}`} />
-                    <span className={`mt-2 text-sm font-semibold transition-colors duration-500 ${i === active ? 'text-graphite' : 'text-graphite/45 group-hover:text-graphite'}`}>{t.year}</span>
+                    <span className={`mt-2 text-sm font-semibold transition-colors duration-500 ${i === active ? 'text-graphite' : 'text-ink-2 group-hover:text-graphite'}`}>{t.year}</span>
                   </button>
                 </li>
               ))}
@@ -139,7 +139,7 @@ function Stack() {
               </div>
               <div className="p-5">
                 <h3 className="text-[1.25rem] font-medium tracking-tight">{t.title}</h3>
-                <p className="mt-1.5 text-[0.95rem] leading-relaxed text-graphite/60">{t.text}</p>
+                <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ink-2">{t.text}</p>
               </div>
             </article>
           ))}

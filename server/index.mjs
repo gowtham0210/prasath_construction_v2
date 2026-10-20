@@ -43,10 +43,9 @@ function validate(b) {
   if (clean(b.fullName).length < 2) e.push('full name')
   const digits = clean(b.phone).replace(/\D/g, '')
   if (digits.length < 8 || digits.length > 15) e.push('phone number')
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(b.email))) e.push('email address')
   if (!clean(b.projectType)) e.push('project type')
-  if (!clean(b.plotAvailability)) e.push('plot availability')
-  if (clean(b.message).length < 10) e.push('project description')
+  // email is optional, but must look right when it is given
+  if (clean(b.email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(b.email))) e.push('email address')
   return e
 }
 
@@ -86,12 +85,14 @@ const server = http.createServer(async (req, res) => {
     fullName: clean(body.fullName, 120),
     phone: clean(body.phone, 40),
     email: clean(body.email, 160),
+    contactPref: clean(body.contactPref, 40),
     projectType: clean(body.projectType, 120),
     plotAvailability: clean(body.plotAvailability, 120),
     budget: clean(body.budget, 80),
     location: clean(body.location, 160),
     message: clean(body.message, 4000),
     page: clean(body.page, 300),
+    quick: body.quick === true,
   }
 
   try {

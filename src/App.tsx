@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import Splash from './components/Preloader'
 import Nav from './components/Nav'
@@ -7,36 +7,55 @@ import ProjectDetail from './components/ProjectDetail'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import PageBackdrop from './components/PageBackdrop'
 import ScrollProgress from './components/ScrollProgress'
+import MobileActionBar from './components/MobileActionBar'
 import Hero from './sections/Hero'
 import About from './sections/About'
 import Services from './sections/Services'
 import Projects from './sections/Projects'
-import Journey from './sections/Journey'
 import Testimonials from './sections/Testimonials'
 import AboutPage from './pages/AboutPage'
 import ServicesPage from './pages/ServicesPage'
+import ServiceDetailPage from './pages/ServiceDetailPage'
+import { services } from './data/services'
 import ProjectsPage from './pages/ProjectsPage'
 import GalleryPage from './pages/GalleryPage'
 import PackagesPage from './pages/PackagesPage'
 import ContactPage from './pages/ContactPage'
-import Stats from './sections/Stats'
 import Packages from './sections/Packages'
-import OwnerStories from './sections/OwnerStories'
 import WhyChoose from './sections/WhyChoose'
-import GalleryPreview from './sections/GalleryPreview'
 import ConsultCta from './sections/ConsultCta'
 import { usePrefersReducedMotion } from './hooks/useEnv'
-import { useRoute } from './hooks/useHashRoute'
+import { useRoute } from './hooks/useRoute'
+import { navigate } from './lib/router'
 import { getLenis, initSmoothScroll, ScrollTrigger } from './lib/smooth'
-import { injectStructuredData, setCanonical } from './lib/seo'
+import { injectStructuredData, setCanonical, setPageMeta } from './lib/seo'
+
+/** true only for the first page load of a browser session that lands on the home page (the flag is set below, once the page has loaded) */
+function firstHomeVisit() {
+  try {
+    const seen = sessionStorage.getItem('splash-seen') === '1'
+    return !seen && location.pathname.replace(/\/+$/, '') === ''
+  } catch {
+    return true
+  }
+}
 
 export default function App() {
   const reduced = usePrefersReducedMotion()
-  const { route, openProject, openPrivacy, close } = useRoute()
+  const { route, openProject, close } = useRoute()
   // development shortcut: `?fast` skips the splash
   const fast = import.meta.env.DEV && new URLSearchParams(location.search).has('fast')
-  const [revealed, setRevealed] = useState(fast)
-  const [splashDone, setSplashDone] = useState(fast)
+  // the splash plays once per visit, and only when the visit starts on the home page: a shared link to Packages or a project opens straight on the content
+  const [skip] = useState(() => fast || !firstHomeVisit())
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('splash-seen', '1')
+    } catch {
+      /* private mode: the splash simply plays each load */
+    }
+  }, [])
+  const [revealed, setRevealed] = useState(skip)
+  const [splashDone, setSplashDone] = useState(skip)
 
   // one smooth-scroll engine for the whole site
   useEffect(() => initSmoothScroll(reduced), [reduced])
@@ -55,19 +74,29 @@ export default function App() {
     return () => clearTimeout(t)
   }, [splashDone])
 
-  useEffect(() => {
-    if (!route) document.title = 'Prasanth Construction — Thoughtfully designed homes, expertly built'
-    if (route && route.kind !== 'project' && route.kind !== 'privacy') document.title = `${route.kind[0].toUpperCase()}${route.kind.slice(1)} — Prasanth Construction`
-  }, [route])
+  // every page has its own title, description and canonical address
+  useEffect(() => setPageMeta(route), [route])
 
   // the About page is a page of its own: start it at the top, and re-measure the scroll effects when pages swap
   const pages = ['about', 'services', 'projects', 'gallery', 'packages', 'contact'] as const
-  const page = route && (pages as readonly string[]).includes(route.kind) ? route.kind : 'home'
+  // a project or the privacy policy opens over the page you came from (or the Projects page when opened directly)
+  const underlay = useRef<(typeof pages)[number] | 'service' | 'home'>(route?.kind === 'project' ? 'projects' : 'home')
+  const overlay = route?.kind === 'project' || route?.kind === 'privacy'
+  const page = overlay ? underlay.current : route ? (route.kind === 'service' ? 'service' : (route.kind as (typeof pages)[number])) : 'home'
+  if (!overlay) underlay.current = page
   useEffect(() => {
     if (page !== 'home') getLenis()?.scrollTo(0, { immediate: true })
     const t = setTimeout(() => ScrollTrigger.refresh(), 400)
     return () => clearTimeout(t)
-  }, [page])
+  }, [page, route?.kind === 'service' ? route.slug : ''])
+
+  // a link such as /services#renovation, opened directly, scrolls to its section once the page is in place
+  useEffect(() => {
+    const id = location.hash.slice(1)
+    if (!id || !splashDone) return
+    const t = setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }), 1200)
+    return () => clearTimeout(t)
+  }, [page, splashDone])
 
   // whenever the page changes height (images load, sections open), re-measure every scroll effect so none is left out of place
   useEffect(() => {
@@ -95,16 +124,18 @@ export default function App() {
 
   return (
     <>
-      <a href="#about" className="sr-only z-[200] rounded-full bg-graphite px-4 py-2 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+      <a href="#main" className="sr-only z-[200] rounded-full bg-graphite px-4 py-2 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
         Skip to content
       </a>
       <Nav visible={revealed} />
       <ScrollProgress />
       <PageBackdrop page={page} />
-      <main>
+      <main id="main" tabIndex={-1}>
         {page === 'about' ? (
           <AboutPage />
-        ) : page === 'services' ? (
+        ) : page === 'service' && route?.kind === 'service' && services.some((x) => x.id === route.slug) ? (
+          <ServiceDetailPage key={route.slug} slug={route.slug} />
+        ) : page === 'services' || page === 'service' ? (
           <ServicesPage />
         ) : page === 'projects' ? (
           <ProjectsPage />
@@ -118,15 +149,11 @@ export default function App() {
           <>
             <Hero play={revealed} />
             <Projects onOpen={openProject} />
-            <OwnerStories />
+            <Testimonials />
             <About />
-            <Stats />
             <Services />
             <WhyChoose />
             <Packages more />
-            <Journey />
-            <Testimonials />
-            <GalleryPreview />
             <ConsultCta />
           </>
         )}
@@ -137,25 +164,43 @@ export default function App() {
         {route?.kind === 'project' && <ProjectDetail key={route.slug} slug={route.slug} onClose={close} onOpen={openProject} />}
         {route?.kind === 'privacy' && <PrivacyPolicy key="privacy" onClose={() => close()} />}
       </AnimatePresence>
-      <PrivacyLinkBridge onOpen={openPrivacy} />
+      <LinkBridge />
 
+      {splashDone && <MobileActionBar hidden={page === 'contact'} />}
       {!splashDone && <Splash onReveal={onReveal} onDone={onDone} />}
     </>
   )
 }
 
-/** Footer/form links use plain `#/privacy` hrefs; this keeps the router in sync when they are clicked. */
-function PrivacyLinkBridge({ onOpen }: { onOpen: () => void }) {
+/**
+ * Every internal link is a real `<a href="/page">`, so it can be opened in a new tab, shared or crawled.
+ * A plain click is handled here instead of reloading the page, and a click on the page you are already on scrolls to the top.
+ */
+function LinkBridge() {
   useEffect(() => {
     const on = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement).closest?.('a[href="#/privacy"]')
-      if (a) {
-        e.preventDefault()
-        onOpen()
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      const a = (e.target as HTMLElement).closest?.('a[href]') as HTMLAnchorElement | null
+      if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return
+      const href = a.getAttribute('href') || ''
+      if (!href.startsWith('/') || href.startsWith('//')) return
+      e.preventDefault()
+      const go = () => {
+        const path = href.split(/[?#]/)[0].replace(/\/+$/, '') || '/'
+        if (path === (location.pathname.replace(/\/+$/, '') || '/') && !href.includes('#')) {
+          const l = getLenis()
+          if (l) l.scrollTo(0, { duration: 1.2 })
+          else window.scrollTo({ top: 0, behavior: 'smooth' })
+        } else navigate(href)
+        const id = href.split('#')[1]
+        if (id) setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 900)
       }
+      // the full-screen menu is closing: let it finish before the page changes
+      if (document.documentElement.dataset.menu === 'open') setTimeout(go, 450)
+      else go()
     }
     document.addEventListener('click', on)
     return () => document.removeEventListener('click', on)
-  }, [onOpen])
+  }, [])
   return null
 }

@@ -93,7 +93,7 @@ export default function Footer() {
   ].filter((s) => s.href)
   const hasContact = company.email || company.phone || company.address
   const title = 'text-[1.1rem] font-medium tracking-tight text-graphite'
-  const item = 'group inline-flex items-center gap-2.5 text-left text-[0.9rem] text-graphite/65 transition-all duration-500 hover:translate-x-1 hover:text-olive'
+  const item = 'group inline-flex items-center gap-2.5 text-left text-[0.9rem] text-ink-2 transition-all duration-500 hover:translate-x-1 hover:text-olive'
   const caret = <span className="h-0 w-0 border-y-[4px] border-l-[5px] border-y-transparent border-l-graphite/45 transition-colors duration-500 group-hover:border-l-olive" aria-hidden="true" />
 
   return (
@@ -106,7 +106,7 @@ export default function Footer() {
         <Stagger className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-10" gap={0.12}>
           <div className="col-span-2 lg:col-span-1">
             <h3 className={title}>Contact Info</h3>
-            <div className="mt-4 space-y-2 text-[0.9rem] leading-relaxed text-graphite/65">
+            <div className="mt-4 space-y-2 text-[0.9rem] leading-relaxed text-ink-2">
               {company.address && <p>{company.address}</p>}
               {company.phone && <p>Phone: <a href={`tel:${company.phone.replace(/\s/g, '')}`} className="link-line text-graphite/85">{company.phone}</a>{company.phone2 && <span> / <a href={`tel:${company.phone2.replace(/\s/g, '')}`} className="link-line text-graphite/85">{company.phone2}</a></span>}</p>}
               {company.email && <p>Email: <a href={`mailto:${company.email}`} className="link-line text-graphite/85">{company.email}</a></p>}
@@ -128,16 +128,10 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {services.map((s) => (
                 <li key={s.id}>
-                  <button
-                    onClick={() => {
-                      setEnquiryPrefill(s.enquiryType)
-                      scrollToId('contact')
-                    }}
-                    className={item}
-                  >
+                  <a href={`/services/${s.id}`} className={item}>
                     {caret}
                     {s.title.replace(' Construction', '')}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -148,10 +142,10 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {nav.map((n) => (
                 <li key={n.id}>
-                  <button onClick={() => scrollToId(n.id)} className={item}>
+                  <a href={n.id === 'top' ? '/' : `/${n.id}`} className={item}>
                     {caret}
                     {n.label}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -162,7 +156,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {projects.slice(0, 5).map((p) => (
                 <li key={p.slug}>
-                  <a href={`#/project/${p.slug}`} className={item}>
+                  <a href={`/projects/${p.slug}`} className={item}>
                     {caret}
                     {p.name}
                   </a>
@@ -172,9 +166,9 @@ export default function Footer() {
           </div>
         </Stagger>
 
-        <div className="mt-9 flex flex-col gap-2 border-t border-graphite/10 py-4 text-[0.8rem] text-graphite/55 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-9 flex flex-col gap-2 border-t border-graphite/10 py-4 text-[0.8rem] text-ink-2 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {company.legalName || company.name}. All rights reserved.</p>
-          <a href="#/privacy" className="link-line w-fit hover:text-graphite">Privacy policy</a>
+          <a href="/privacy" className="link-line w-fit hover:text-graphite">Privacy policy</a>
         </div>
       </div>
 

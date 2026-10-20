@@ -8,7 +8,7 @@ GSAP + ScrollTrigger · Lenis · Framer Motion · Lucide.
 
 > **Everything with a company name, contact detail, project or testimonial is a PLACEHOLDER.** See
 > [Replacing content](#replacing-content) — nothing is invented as fact: projects are labelled *concepts*, and there are
-> no fake testimonials, statistics, awards or certifications.
+> every statistic, award, certification and testimonial comes from the business's own published information and must be backed by proof (review links, certificate numbers) before launch.
 
 ## What is on the page
 

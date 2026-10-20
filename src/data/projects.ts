@@ -25,7 +25,7 @@ export interface Project {
 /** The seven stages every Prasath Construction build moves through (from prasathconstructions.in). */
 const PROCESS = [
   'Consultation — free meeting with our architect to understand your needs',
-  'Design & Approvals — floor plans, 3D walkthroughs, CMDA approvals',
+  'Design & Approvals — floor plans, 3D walkthroughs, DTCP approvals',
   'Estimation — fixed-cost BOQ with brand-wise material specs',
   'Foundation — soil testing, excavation, footings and plinth',
   'Structure — RCC framing, masonry, plumbing & electrical rough-in',

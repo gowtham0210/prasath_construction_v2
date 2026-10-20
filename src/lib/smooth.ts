@@ -1,6 +1,7 @@
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { navigate, PAGE_PATHS } from './router'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -27,21 +28,21 @@ export function initSmoothScroll(reduced: boolean): () => void {
 
 export const getLenis = () => lenis
 
-const PAGES: Record<string, string> = { about: '/about', services: '/services', projects: '/projects', gallery: '/gallery', packages: '/packages', contact: '/contact' }
+const PAGES: Record<string, string> = PAGE_PATHS
 
 export function scrollToId(id: string, offset = 0) {
-  const here = Object.values(PAGES).find((p) => location.hash.startsWith('#' + p))
-  // About and Services are pages of their own: their ids open the page, and any other target first returns home
+  // About, Services, Projects, Gallery, Packages and Contact are pages of their own: their ids open the page
   if (id in PAGES) {
-    if (location.hash.startsWith('#' + PAGES[id])) {
+    if (location.pathname.replace(/\/+$/, '') === PAGES[id]) {
       if (lenis) lenis.scrollTo(0, { duration: 1.2 })
       else window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else location.hash = PAGES[id]
+    } else navigate(PAGES[id])
     return
   }
-  if (here) {
-    history.pushState(null, '', location.pathname + location.search)
-    window.dispatchEvent(new HashChangeEvent('hashchange'))
+  const here = document.getElementById(id)
+  // any other target lives on the page you are on, or else on the home page
+  if (!here && location.pathname !== '/') {
+    navigate('/')
     setTimeout(() => {
       lenis?.resize()
       ScrollTrigger.refresh()
@@ -49,7 +50,7 @@ export function scrollToId(id: string, offset = 0) {
     }, 800)
     return
   }
-  const el = document.getElementById(id)
+  const el = here
   if (!el) return
   if (lenis) lenis.scrollTo(el, { offset, duration: 1.7, easing: (t: number) => 1 - Math.pow(1 - t, 4) })
   else el.scrollIntoView({ behavior: 'smooth', block: 'start' })

@@ -43,7 +43,6 @@ export default function ProjectDetail({ slug, onClose, onOpen }: Props) {
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: 0 })
-    if (project) document.title = `${project.name} — ${company.name}`
   }, [slug, project])
 
   if (!project) {
@@ -102,7 +101,7 @@ export default function ProjectDetail({ slug, onClose, onOpen }: Props) {
         <div className="lg:col-span-7">
           <p className="eyebrow text-olive">Overview</p>
           <p className="mt-6 font-serif text-[clamp(1.5rem,2.4vw,2.2rem)] leading-snug">{project.concept}</p>
-          <p className="mt-8 max-w-2xl text-graphite/70">{project.overview}</p>
+          <p className="mt-8 max-w-2xl text-ink-2">{project.overview}</p>
         </div>
         <aside className="lg:col-span-4 lg:col-start-9">
           <p className="eyebrow text-olive">Project details</p>
@@ -115,7 +114,7 @@ export default function ProjectDetail({ slug, onClose, onOpen }: Props) {
               
             ].map(([k, v]) => (
               <div key={k} className="grid grid-cols-[8rem_1fr] gap-4 py-4">
-                <dt className="text-graphite/50">{k}</dt>
+                <dt className="text-ink-2">{k}</dt>
                 <dd>{v}</dd>
               </div>
             ))}
@@ -146,7 +145,7 @@ export default function ProjectDetail({ slug, onClose, onOpen }: Props) {
             <dl className="mt-6 divide-y divide-graphite/10 border-y border-graphite/10 text-sm">
               {project.specs.map((s) => (
                 <div key={s.label} className="grid grid-cols-[8rem_1fr] gap-4 py-4">
-                  <dt className="text-graphite/60">{s.label}</dt>
+                  <dt className="text-ink-2">{s.label}</dt>
                   <dd>{s.value}</dd>
                 </div>
               ))}
@@ -169,13 +168,13 @@ export default function ProjectDetail({ slug, onClose, onOpen }: Props) {
       <div className="container-x grid gap-10 py-24 md:grid-cols-2 md:items-end">
         <div>
           <h2 className="display text-[clamp(2.2rem,5vw,4.6rem)]">Imagine it on <em className="text-olive">your plot.</em></h2>
-          <p className="mt-5 max-w-md text-graphite/65">Tell us about your plot and your plans, and we will explore what is possible together.</p>
+          <p className="mt-5 max-w-md text-ink-2">Tell us about your plot and your plans, and we will explore what is possible together.</p>
           <button onClick={enquire} className="btn-primary mt-8">
             Start an enquiry <ArrowUpRight size={16} strokeWidth={1.5} />
           </button>
         </div>
         <button onClick={() => onOpen(next.slug)} className="group text-left md:justify-self-end" aria-label={`Next project: ${next.name}`}>
-          <span className="eyebrow text-graphite/50">Next project</span>
+          <span className="eyebrow text-ink-2">Next project</span>
           <span className="mt-3 flex items-center gap-4 font-serif text-3xl md:text-4xl">
             {next.name}
             <ArrowRight className="transition-transform duration-500 group-hover:translate-x-2" strokeWidth={1.2} />

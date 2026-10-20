@@ -20,7 +20,7 @@ export const services: Service[] = [
     id: 'house-construction', number: '01', title: 'House Construction',
     headline: 'New homes built on a fixed cost, fixed timeline.',
     summary: 'From soil testing to key handover, our in-house engineers and site supervisors manage every stage of your build — RCC framing, masonry, plumbing, and electrical — with milestone-based payments and daily progress updates.',
-    points: ['Soil testing & structural design', 'CMDA / DTCP approvals', 'Fixed-cost BOQ, brand-wise specs', '10-year structural warranty'],
+    points: ['Soil testing & structural design', 'DTCP approvals', 'Fixed-cost BOQ, brand-wise specs', '10-year structural warranty'],
     enquiryType: 'House Construction', image: 'p-about',
   },
   {

@@ -42,7 +42,7 @@ export default function ProjectsPage() {
         <div className="container-x">
           <div role="tablist" aria-label="Filter projects" className="no-scrollbar flex gap-2 overflow-x-auto pb-2 md:justify-center">
             {projectFilters.map((f) => (
-              <button key={f} role="tab" aria-selected={filter === f} onClick={() => setFilter(f)} className={`relative shrink-0 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 ${filter === f ? 'bg-graphite text-white shadow-[0_12px_30px_-12px_rgba(15,18,24,0.6)]' : 'bg-white/70 text-graphite/65 hover:bg-white hover:text-graphite'}`}>
+              <button key={f} role="tab" aria-selected={filter === f} onClick={() => setFilter(f)} className={`relative shrink-0 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-500 ${filter === f ? 'bg-graphite text-white shadow-[0_12px_30px_-12px_rgba(15,18,24,0.6)]' : 'bg-white/70 text-ink-2 hover:bg-white hover:text-graphite'}`}>
                 {f}
               </button>
             ))}
@@ -54,7 +54,7 @@ export default function ProjectsPage() {
                 <motion.a
                   key={p.slug}
                   layout
-                  href={`#/project/${p.slug}`}
+                  href={`/projects/${p.slug}`}
                   initial={{ opacity: 0, y: 50, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.94 }}
@@ -71,8 +71,8 @@ export default function ProjectsPage() {
                   </div>
                   <div className="p-5">
                     <h2 className="text-[1.35rem] font-medium tracking-tight">{p.name}</h2>
-                    <p className="mt-1 flex items-center gap-1.5 text-sm text-graphite/60"><MapPin size={14} strokeWidth={1.7} />{p.location}</p>
-                    <div className="mt-4 flex flex-wrap gap-2 text-xs font-medium text-graphite/70">
+                    <p className="mt-1 flex items-center gap-1.5 text-sm text-ink-2"><MapPin size={14} strokeWidth={1.7} />{p.location}</p>
+                    <div className="mt-4 flex flex-wrap gap-2 text-xs font-medium text-ink-2">
                       <span className="rounded-full bg-graphite/5 px-3 py-1.5">{p.concept.split(' residence')[0]}</span>
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-graphite/5 px-3 py-1.5"><Ruler size={12} strokeWidth={1.8} />{p.builtUp.replace(' built-up', '')}</span>
                     </div>
@@ -97,7 +97,7 @@ export default function ProjectsPage() {
                 <h2 id="projects-trust-title" className="display mx-auto mt-5 max-w-3xl text-[clamp(2rem,4.4vw,4rem)] !leading-[1.04]">
                   {trust.lines[0]} <span className="accent-word">{trust.lines[1]}</span>
                 </h2>
-                <p className="mx-auto mt-4 max-w-xl text-graphite/65">{trust.text}</p>
+                <p className="mx-auto mt-4 max-w-xl text-ink-2">{trust.text}</p>
                 <div className="mt-6 flex flex-wrap justify-center gap-2.5">
                   {trust.badges.map((b) => <span key={b} className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium backdrop-blur">{b}</span>)}
                 </div>

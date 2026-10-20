@@ -1,0 +1,10 @@
+{
+  "home": { "path": "/", "title": "Prasanth Construction — Thoughtfully designed homes, expertly built", "description": "Architect-led turnkey house construction in Dharmapuri and across Tamilnadu. Fixed-cost packages, daily progress updates and on-time delivery." },
+  "about": { "path": "/about", "title": "About Us — Prasanth Construction", "description": "Meet the architects, engineers and craftspeople behind Prasanth Construction: our story since 2014, our mission, and how we build homes across Tamilnadu." },
+  "services": { "path": "/services", "title": "Services — House Construction, Interiors & Renovation | Prasanth Construction", "description": "House construction, interior design, turnkey solutions, architecture and renovation — delivered by one accountable team in Dharmapuri and Tamilnadu." },
+  "projects": { "path": "/projects", "title": "Projects — Completed, Ongoing & Upcoming Homes | Prasanth Construction", "description": "Explore the homes Prasanth Construction has completed, the ones in progress and what is coming next, with photos, specifications and locations." },
+  "gallery": { "path": "/gallery", "title": "Gallery — Our Sites & Finished Homes | Prasanth Construction", "description": "Photos from our building sites and finished homes: foundations, framing, finishing and handover." },
+  "packages": { "path": "/packages", "title": "Construction Packages & Cost per Sq.Ft | Prasanth Construction", "description": "Fixed-cost house construction packages priced per sq.ft of built-up area, including design, approvals, materials, labour and supervision." },
+  "contact": { "path": "/contact", "title": "Contact & Free Consultation — Prasanth Construction", "description": "Book a free 60-minute consultation with a senior architect, or call and WhatsApp the Prasanth Construction team in Dharmapuri." },
+  "privacy": { "path": "/privacy", "title": "Privacy Policy — Prasanth Construction", "description": "How Prasanth Construction collects, uses and protects the details you share through our enquiry form." }
+}

@@ -66,9 +66,18 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
       <div className="container-x">
         <SectionHead id={`${id}-title`} chip="Why choose us" lines={['Built different.', 'Built better.']} accent={['better.']} text="Six reasons families trust us with the biggest build of their lives." />
 
-        <div className="mt-14 grid gap-4 lg:grid-cols-12 lg:gap-5">
+        <ul className="mt-8 flex flex-wrap justify-center gap-3" aria-label="Key numbers">
+          {[['320+', 'Homes delivered'], ['15+', 'Areas covered']].map(([v, l]) => (
+            <li key={l} className="flex items-center gap-3 rounded-full border border-graphite/10 bg-white/70 py-2 pl-5 pr-6 backdrop-blur-md">
+              <span className="text-[1.3rem] font-semibold leading-none tracking-tight">{v}</span>
+              <span className="text-sm font-medium text-ink-2">{l}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
           {/* A — photograph */}
-          <article data-tile onPointerMove={move} className={`${tile} min-h-[22rem] bg-graphite text-white shadow-[0_40px_90px_-45px_rgba(15,18,24,0.8)] lg:col-span-5 lg:row-span-2`}>
+          <article data-tile onPointerMove={move} className={`${tile} min-h-[22rem] bg-graphite text-white shadow-[0_40px_90px_-45px_rgba(15,18,24,0.8)] md:col-span-2 lg:col-span-5 lg:row-span-2`}>
             <div className="absolute inset-0 transition-transform duration-[1600ms] ease-[var(--ease-expo)] group-hover:scale-[1.07]">
               <Still id="p-about" className="h-full w-full !rounded-none" />
             </div>
@@ -103,9 +112,9 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
             <div className="relative flex h-full flex-col justify-between gap-8">
               <div className="flex items-center justify-between"><span className="chip">03</span><Layers size={24} strokeWidth={1.4} className="transition-transform duration-500 group-hover:rotate-12" /></div>
               <div>
-                <p className="text-[2.6rem] font-semibold leading-none tracking-tight">1</p>
+                <p className="text-[2.6rem] font-semibold leading-none tracking-tight">1 contract</p>
                 <h3 className="mt-2 text-[1.25rem] font-medium tracking-tight">{turnkey.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-white/80">One contract, one accountable team.</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-white/80">One accountable team, from design to handover.</p>
               </div>
             </div>
           </article>
@@ -118,7 +127,7 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
               <div>
                 <p className="text-[clamp(2.6rem,4.4vw,3.6rem)] font-semibold leading-none tracking-tight">4.9<span className="accent-word">★</span></p>
                 <h3 className="mt-3 text-[1.3rem] font-medium tracking-tight">{client.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-graphite/60">{client.text}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-2">{client.text}</p>
               </div>
             </div>
           </article>
@@ -134,13 +143,13 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
                   <span className="relative grid h-3 w-3 place-items-center"><span className="absolute inset-0 rounded-full bg-[#2fbf71]" style={{ animation: 'pulseRing 1.8s ease-out infinite' }} /><span className="h-3 w-3 rounded-full bg-[#2fbf71]" /></span>
                 </p>
                 <h3 className="mt-3 text-[1.25rem] font-medium tracking-tight">{updates.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-graphite/60">Progress updates and a tracking app, from anywhere.</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-2">Progress updates and a tracking app, from anywhere.</p>
               </div>
             </div>
           </article>
 
           {/* F — wide strip */}
-          <article data-tile onPointerMove={move} className={`${tile} card flex flex-col gap-5 p-7 sm:flex-row sm:items-center sm:justify-between lg:col-span-12 lg:p-9`}>
+          <article data-tile onPointerMove={move} className={`${tile} card flex flex-col gap-5 p-7 md:col-span-2 lg:col-span-12 lg:flex-row lg:items-center lg:justify-between lg:p-9`}>
             <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={glow('rgba(143,179,234,0.3)')} />
             <div className="relative flex items-center gap-5">
               <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-graphite text-white transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"><ReceiptText size={24} strokeWidth={1.5} /></span>
@@ -149,7 +158,7 @@ export default function WhyChoose({ id = 'home-why' }: { id?: string }) {
                 <h3 className="mt-2 text-[1.5rem] font-medium tracking-tight">{pricing.title}</h3>
               </div>
             </div>
-            <p className="relative max-w-xl text-[1rem] leading-relaxed text-graphite/65">{pricing.text}</p>
+            <p className="relative max-w-xl text-[1rem] leading-relaxed text-ink-2">{pricing.text}</p>
             <div className="relative flex shrink-0 flex-wrap gap-2">
               {['Fixed-cost BOQ', 'Brand-wise specs', 'No hidden costs'].map((t) => <span key={t} className="rounded-full bg-graphite/5 px-4 py-2 text-sm font-medium">{t}</span>)}
             </div>

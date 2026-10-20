@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { AlertCircle, ArrowUpRight, CheckCircle2, Clock, Loader2, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
+import { AlertCircle, ArrowUpRight, CheckCircle2, ChevronDown, Clock, Loader2, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import { company, whatsappLink } from '../config/company'
 import Magnetic from '../components/Magnetic'
 import { Reveal, RevealWords, Stagger } from '../components/Reveal'
-import { budgetOptions, EnquiryError, plotOptions, projectTypes, submitEnquiry, validate, type EnquiryErrors, type EnquiryPayload } from '../lib/enquiry'
+import { budgetOptions, contactPrefs, EnquiryError, plotOptions, projectTypes, submitEnquiry, validate, type EnquiryErrors, type EnquiryPayload } from '../lib/enquiry'
 import { useEnquiryPrefill } from '../lib/store'
 
 const empty: EnquiryPayload = {
-  fullName: '', phone: '', email: '', projectType: '', plotAvailability: '', budget: budgetOptions[0], location: '', message: '', website: '',
+  fullName: '', phone: '', email: '', projectType: '', contactPref: 'Call me', plotAvailability: '', budget: budgetOptions[0], location: '', message: '', website: '',
 }
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 const fieldBase =
-  'w-full rounded-2xl border border-graphite/10 bg-white px-4 py-3 text-graphite shadow-[0_8px_24px_-18px_rgba(40,60,110,0.5)] placeholder:text-graphite/35 transition-all duration-300 focus:border-olive focus:shadow-[0_0_0_4px_rgba(68,80,224,0.12)] focus:outline-none [&:-webkit-autofill]:[-webkit-text-fill-color:#0f1218]'
+  'w-full rounded-2xl border border-graphite/10 bg-white px-4 py-3 text-graphite shadow-[0_8px_24px_-18px_rgba(40,60,110,0.5)] placeholder:text-ink-3 transition-all duration-300 focus:border-olive focus:shadow-[0_0_0_4px_rgba(68,80,224,0.12)] focus:outline-none [&:-webkit-autofill]:[-webkit-text-fill-color:#0f1218]'
 
-const required: (keyof EnquiryPayload)[] = ['fullName', 'phone', 'email', 'projectType', 'plotAvailability', 'message']
+const required: (keyof EnquiryPayload)[] = ['fullName', 'phone', 'projectType']
 const steps = ['Book your free 60-minute session.', 'A senior architect calls you for a consultation.', 'You walk away with a floor-plan direction and a fixed estimate.']
 
 export default function Contact() {
@@ -24,6 +24,7 @@ export default function Contact() {
   const [vals, setVals] = useState<EnquiryPayload>(empty)
   const [errors, setErrors] = useState<EnquiryErrors>({})
   const [status, setStatus] = useState<Status>('idle')
+  const [more, setMore] = useState(false)
   const [serverError, setServerError] = useState('')
   const form = useRef<HTMLFormElement | null>(null)
 
@@ -43,7 +44,8 @@ export default function Contact() {
     setErrors(er)
     const first = Object.keys(er)[0]
     if (first) {
-      form.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus()
+      if (first === 'email') setMore(true)
+      setTimeout(() => form.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus(), 0)
       return
     }
     setStatus('sending')
@@ -60,7 +62,7 @@ export default function Contact() {
   const wa = whatsappLink(`Hello, I would like to discuss building a home. ${vals.projectType ? `(${vals.projectType})` : ''}`)
 
   const label = (id: string, text: string, req = true) => (
-    <label htmlFor={id} className="eyebrow mb-1.5 block text-graphite/60">
+    <label htmlFor={id} className="eyebrow mb-1.5 block text-ink-2">
       {text}
       {req && <span className="text-olive"> *</span>}
     </label>
@@ -99,7 +101,7 @@ export default function Contact() {
                 <h2 id="contact-form-title" className="display mt-5 text-[clamp(2.2rem,4vw,3.8rem)] !leading-[1.02]" aria-label="Book your free 60-min session.">
                   <RevealWords as="span" lines={['Book your free', '60-min session.']} italic={['session']} stagger={0.09} />
                 </h2>
-                <Reveal className="mt-4 max-w-sm text-[1rem] leading-relaxed text-graphite/65" delay={0.1}>
+                <Reveal className="mt-4 max-w-sm text-[1rem] leading-relaxed text-ink-2" delay={0.1}>
                   No obligations. Walk away with a floor-plan direction and a fixed estimate.
                 </Reveal>
 
@@ -133,7 +135,7 @@ export default function Contact() {
 
                 {/* what happens next */}
                 <div className="mt-9">
-                  <p className="eyebrow text-graphite/50">What happens next</p>
+                  <p className="eyebrow text-ink-2">What happens next</p>
                   <div className="relative mt-4">
                     <span className="absolute bottom-4 left-[15px] top-4 w-px bg-graphite/15" aria-hidden="true" />
                     <Stagger as="ol" className="space-y-4" gap={0.18}>
@@ -143,7 +145,7 @@ export default function Contact() {
                             <span className="absolute inset-0 rounded-full border border-olive/40" style={{ animation: `pulseRing 2.8s ease-out ${i * 0.7}s infinite` }} />
                             {i + 1}
                           </span>
-                          <span className="text-sm text-graphite/70">{t}</span>
+                          <span className="text-sm text-ink-2">{t}</span>
                         </li>
                       ))}
                     </Stagger>
@@ -161,7 +163,7 @@ export default function Contact() {
                       <CheckCircle2 className="text-olive" size={40} strokeWidth={1.4} />
                     </motion.span>
                     <h3 className="display mt-6 text-[clamp(1.8rem,3.4vw,2.8rem)]">Thank you, {vals.fullName.split(' ')[0]}.</h3>
-                    <p className="mx-auto mt-3 max-w-sm text-graphite/65">Your enquiry has been received. We will get back to you using the details you provided.</p>
+                    <p className="mx-auto mt-3 max-w-sm text-ink-2">Your enquiry has been received. We will get back to you using the details you provided.</p>
                     <button
                       className="btn-ghost mx-auto mt-7"
                       onClick={() => {
@@ -176,9 +178,9 @@ export default function Contact() {
                   <motion.form key="form" ref={form} onSubmit={submit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid gap-x-5 gap-y-5 md:grid-cols-2" aria-describedby="form-status">
                     {/* a bar that fills as the form is completed */}
                     <div className="md:col-span-2">
-                      <div className="flex items-center justify-between text-xs font-medium text-graphite/50">
-                        <span>Your enquiry</span>
-                        <span>{done} of {required.length} filled</span>
+                      <div className="flex items-center justify-between text-xs font-medium text-ink-2">
+                        <span>Step 1 · Your details</span>
+                        <span>{done} of {required.length} done</span>
                       </div>
                       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-graphite/10">
                         <span className="block h-full w-full origin-left rounded-full bg-gradient-to-r from-[#8fb3ea] to-olive transition-transform duration-700 ease-[var(--ease-expo)]" style={{ transform: `scaleX(${done / required.length})` }} />
@@ -201,48 +203,70 @@ export default function Contact() {
                       <input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" className={fieldBase} placeholder="+91 …" value={vals.phone} onChange={set('phone')} {...aria('phone')} />
                       {err('phone')}
                     </div>
-                    <div className="md:col-span-2">
-                      {label('email', 'Email address')}
-                      <input id="email" name="email" type="email" autoComplete="email" className={fieldBase} placeholder="you@example.com" value={vals.email} onChange={set('email')} {...aria('email')} />
-                      {err('email')}
-                    </div>
                     <div>
-                      {label('projectType', 'Preferred project type')}
+                      {label('projectType', 'What do you want to build?')}
                       <select id="projectType" name="projectType" className={`${fieldBase} [&>option]:text-graphite`} value={vals.projectType} onChange={set('projectType')} {...aria('projectType')}>
                         <option value="">Select…</option>
                         {projectTypes.map((t) => <option key={t}>{t}</option>)}
                       </select>
                       {err('projectType')}
                     </div>
-                    <div>
-                      {label('plotAvailability', 'Plot availability')}
-                      <select id="plotAvailability" name="plotAvailability" className={`${fieldBase} [&>option]:text-graphite`} value={vals.plotAvailability} onChange={set('plotAvailability')} {...aria('plotAvailability')}>
-                        <option value="">Select…</option>
-                        {plotOptions.map((t) => <option key={t}>{t}</option>)}
-                      </select>
-                      {err('plotAvailability')}
-                    </div>
-                    <div>
-                      {label('budget', 'Approximate budget', false)}
-                      <select id="budget" name="budget" className={`${fieldBase} [&>option]:text-graphite`} value={vals.budget} onChange={set('budget')}>
-                        {budgetOptions.map((t) => <option key={t}>{t}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      {label('location', 'Preferred location', false)}
-                      <input id="location" name="location" autoComplete="address-level2" className={fieldBase} placeholder="City or area" value={vals.location} onChange={set('location')} />
-                    </div>
+                    <fieldset>
+                      <legend className="eyebrow mb-1.5 block text-ink-2">How should we reach you?</legend>
+                      <div className="flex gap-2">
+                        {contactPrefs.map((c) => (
+                          <label key={c} className={`flex flex-1 cursor-pointer items-center justify-center rounded-2xl border px-3 py-3 text-sm font-medium transition-all duration-300 focus-within:shadow-[0_0_0_4px_rgba(68,80,224,0.12)] ${vals.contactPref === c ? 'border-graphite bg-graphite text-white' : 'border-graphite/10 bg-white hover:border-graphite/30'}`}>
+                            <input type="radio" name="contactPref" value={c} checked={vals.contactPref === c} onChange={set('contactPref')} className="sr-only" />
+                            {c}
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+
+                    {/* step 2 — optional */}
                     <div className="md:col-span-2">
-                      {label('message', 'Project description')}
-                      <textarea id="message" name="message" rows={4} className={`${fieldBase} resize-y`} placeholder="Your plot, your plans, the home you imagine…" value={vals.message} onChange={set('message')} {...aria('message')} />
-                      {err('message')}
+                      <button type="button" onClick={() => setMore((m) => !m)} aria-expanded={more} aria-controls="more-details" className="flex w-full items-center justify-between gap-4 rounded-2xl border border-dashed border-graphite/20 px-5 py-4 text-left transition-colors hover:border-graphite/40 hover:bg-white/60">
+                        <span>
+                          <span className="block text-[0.98rem] font-medium">Step 2 · Tell us more <span className="font-normal text-ink-2">(optional)</span></span>
+                          <span className="block text-sm text-ink-2">Plot, budget, location, email and notes help us prepare, but you can skip them.</span>
+                        </span>
+                        <ChevronDown size={20} strokeWidth={1.6} className={`shrink-0 transition-transform duration-500 ${more ? 'rotate-180' : ''}`} aria-hidden="true" />
+                      </button>
+                    </div>
+                    <div id="more-details" hidden={!more} className="grid gap-x-5 gap-y-5 md:col-span-2 md:grid-cols-2">
+                      <div>
+                        {label('plotAvailability', 'Plot availability', false)}
+                        <select id="plotAvailability" name="plotAvailability" className={`${fieldBase} [&>option]:text-graphite`} value={vals.plotAvailability} onChange={set('plotAvailability')}>
+                          <option value="">Select…</option>
+                          {plotOptions.map((t) => <option key={t}>{t}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        {label('budget', 'Approximate budget', false)}
+                        <select id="budget" name="budget" className={`${fieldBase} [&>option]:text-graphite`} value={vals.budget} onChange={set('budget')}>
+                          {budgetOptions.map((t) => <option key={t}>{t}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        {label('location', 'Preferred location', false)}
+                        <input id="location" name="location" autoComplete="address-level2" className={fieldBase} placeholder="City or area" value={vals.location} onChange={set('location')} />
+                      </div>
+                      <div>
+                        {label('email', 'Email address', false)}
+                        <input id="email" name="email" type="email" autoComplete="email" className={fieldBase} placeholder="you@example.com" value={vals.email} onChange={set('email')} {...aria('email')} />
+                        {err('email')}
+                      </div>
+                      <div className="md:col-span-2">
+                        {label('message', 'Notes', false)}
+                        <textarea id="message" name="message" rows={4} className={`${fieldBase} resize-y`} placeholder="Your plot, your plans, the home you imagine…" value={vals.message} onChange={set('message')} />
+                      </div>
                     </div>
 
                     <div className="flex flex-col gap-4 md:col-span-2 md:flex-row md:items-center md:justify-between">
                       <Magnetic as="button" type="submit" disabled={status === 'sending'} className="btn-primary disabled:cursor-progress disabled:opacity-70">
                         {status === 'sending' ? (<><Loader2 size={16} className="animate-spin" /> Sending…</>) : (<>Send enquiry <ArrowUpRight size={16} strokeWidth={1.6} /></>)}
                       </Magnetic>
-                      <p className="max-w-xs text-xs text-graphite/50">By sending this form you agree to be contacted about your enquiry. See our <a href="#/privacy" className="link-line text-graphite/80">privacy policy</a>.</p>
+                      <p className="max-w-xs text-xs text-ink-2">By sending this form you agree to be contacted about your enquiry. See our <a href="/privacy" className="link-line text-graphite/80">privacy policy</a>.</p>
                     </div>
 
                     <div id="form-status" className="md:col-span-2" role="status" aria-live="polite">
