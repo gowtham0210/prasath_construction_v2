@@ -59,7 +59,7 @@ export function RevealWords({ lines, as: Tag = 'h2', className = '', play, delay
       {lines.map((line, i) => (
         <span key={i} className="mask-line" aria-hidden="true">
           {line.split(' ').map((w, j, arr) => (
-            <span key={j} className="inline-block overflow-hidden align-bottom">
+            <span key={j} className="-mb-[0.2em] inline-block overflow-hidden pb-[0.2em] align-bottom">
               <span data-w className={`inline-block ${italic.map((x) => x.replace(/[.,]/g, '')).includes(w.replace(/[.,]/g, '')) ? 'accent-word' : ''}`}>
                 {w}
                 {j < arr.length - 1 ? ' ' : ''}

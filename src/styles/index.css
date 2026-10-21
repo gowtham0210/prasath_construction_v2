@@ -65,7 +65,7 @@
     background-size: calc(100% / 6) 100%;
     opacity: 0.05;
   }
-  .mask-line { display: block; overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+  .mask-line { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
   .mask-line > span { display: inline-block; will-change: transform; }
 
   /* primary: dark pill with an indigo circular arrow (the arrow is drawn by ::after, so inner icons are hidden) */
@@ -180,3 +180,6 @@ main { overflow-x: clip; }
 
 /* leave room for the phone action bar so it never covers the end of the page */
 @media (max-width: 639px) { body { padding-bottom: 76px; } }
+
+/* gradient-filled accent words only paint inside their own box: give the box room below the baseline so the tails of g, y and j are not cut off */
+[data-w].accent-word { padding-bottom: 0.2em; margin-bottom: -0.2em; }

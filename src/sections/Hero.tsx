@@ -2,7 +2,6 @@ import { useLayoutEffect, useRef } from 'react'
 import { ArrowDown } from 'lucide-react'
 import { RevealWords } from '../components/Reveal'
 import Magnetic from '../components/Magnetic'
-import LoopVideo from '../components/LoopVideo'
 import { services } from '../data/services'
 import { hero, heroStats } from '../data/prasath'
 import { gsap, scrollToId } from '../lib/smooth'
@@ -92,7 +91,7 @@ export default function Hero({ play }: Props) {
         <div data-in="film" data-scroll="film" className="absolute inset-0">
           <div data-par="film" className="absolute -inset-6">
             <div className="h-full w-full" style={{ animation: reduced ? undefined : 'kenburns 28s ease-in-out infinite alternate' }}>
-              <LoopVideo src="/media/twostorey.mp4" poster="two-front" className="h-full w-full" focus="50% 40%" />
+              <img src="/images/hero-phoenix.webp" alt="" width={1833} height={858} fetchPriority="high" decoding="async" draggable={false} className="h-full w-full object-cover" style={{ objectPosition: '70% 45%' }} />
             </div>
           </div>
         </div>
