@@ -18,15 +18,55 @@ export default function GalleryPage() {
   const mobile = useIsMobile()
   const cols = mobile ? 2 : 4
 
-  // deal the photographs out to the shortest column each time, so the columns end at nearly the same height
+  // deal the photographs out to the shortest column each time, then swap and move a few so every column ends at nearly the same height
   const columns = useMemo(() => {
+    const gap = cols === 2 ? 0.1 : 0.06 // the space between tiles, as a fraction of a column's width
+    const h = (i: number) => 1 / GALLERY_RATIOS[i] + gap
     const out: number[][] = Array.from({ length: cols }, () => [])
-    const heights = new Array(cols).fill(0)
+    const heights: number[] = new Array(cols).fill(0)
     galleryIds.forEach((_, i) => {
       const c = heights.indexOf(Math.min(...heights))
       out[c].push(i)
-      heights[c] += 1 / GALLERY_RATIOS[i]
+      heights[c] += h(i)
     })
+    const spread = () => Math.max(...heights) - Math.min(...heights)
+    for (let pass = 0; pass < 200; pass++) {
+      const hi = heights.indexOf(Math.max(...heights))
+      const lo = heights.indexOf(Math.min(...heights))
+      const before = spread()
+      let best: { kind: 'move' | 'swap'; a: number; b?: number; gain: number } | null = null
+      // move one tile from the tallest column to the shortest, or swap a pair between them
+      out[hi].forEach((ti, ai) => {
+        const dm = Math.abs(heights[hi] - h(ti) - (heights[lo] + h(ti)))
+        if (heights[hi] - h(ti) >= heights[lo] + h(ti) - 1e-9 || dm < heights[hi] - heights[lo]) {
+          const gain = heights[hi] - heights[lo] - dm
+          if (gain > 1e-6 && (!best || gain > best.gain)) best = { kind: 'move', a: ai, gain }
+        }
+        out[lo].forEach((tj, bj) => {
+          const d = h(ti) - h(tj)
+          const gain = heights[hi] - heights[lo] - Math.abs(heights[hi] - heights[lo] - 2 * d)
+          if (gain > 1e-6 && (!best || gain > best.gain)) best = { kind: 'swap', a: ai, b: bj, gain }
+        })
+      })
+      if (!best) break
+      const m = best as { kind: 'move' | 'swap'; a: number; b?: number }
+      if (m.kind === 'move') {
+        const [t] = out[hi].splice(m.a, 1)
+        out[lo].push(t)
+        heights[hi] -= h(t)
+        heights[lo] += h(t)
+      } else {
+        const ti = out[hi][m.a]
+        const tj = out[lo][m.b as number]
+        out[hi][m.a] = tj
+        out[lo][m.b as number] = ti
+        heights[hi] += h(tj) - h(ti)
+        heights[lo] += h(ti) - h(tj)
+      }
+      if (spread() >= before) break
+    }
+    // keep each column in the original viewing order
+    out.forEach((c) => c.sort((x, y) => x - y))
     return out
   }, [cols])
 
@@ -46,7 +86,7 @@ export default function GalleryPage() {
   useLayoutEffect(() => {
     if (reduced) return
     const ctx = gsap.context(() => {
-      const speeds = mobile ? [60, -60] : [90, -110, 60, -140]
+      const speeds = mobile ? [16, -16] : [26, -26, 26, -26]
       gsap.utils.toArray<HTMLElement>('[data-col]').forEach((col, i) => {
         gsap.fromTo(col, { y: speeds[i] }, { y: -speeds[i], ease: 'none', scrollTrigger: { trigger: '#gallery-grid', start: 'top bottom', end: 'bottom top', scrub: 0.8 } })
       })

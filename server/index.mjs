@@ -5,6 +5,7 @@
 // Environment (all optional):
 //   PORT                 listen port (default 8787)
 //   ENQUIRIES_FILE       where enquiries are appended as JSON lines (default server/data/enquiries.jsonl)
+//   SUBSCRIBERS_FILE     where footer sign-ups are appended (default server/data/subscribers.jsonl)
 //   FORWARD_WEBHOOK_URL  also POST each enquiry as JSON to this URL (Slack/Make/Zapier/n8n/your CRM…)
 //   ALLOWED_ORIGIN       if the site is served from a different origin, allow it here (CORS)
 //
@@ -17,6 +18,7 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 const PORT = Number(process.env.PORT || 8787)
 const FILE = resolve(process.env.ENQUIRIES_FILE || resolve(here, 'data/enquiries.jsonl'))
+const SUBS_FILE = resolve(process.env.SUBSCRIBERS_FILE || resolve(here, 'data/subscribers.jsonl'))
 const WEBHOOK = process.env.FORWARD_WEBHOOK_URL || ''
 const ORIGIN = process.env.ALLOWED_ORIGIN || ''
 const MAX_BYTES = 20_000
@@ -55,7 +57,7 @@ const server = http.createServer(async (req, res) => {
     return res.end()
   }
   if (req.method === 'GET' && req.url === '/api/health') return send(res, 200, { ok: true })
-  if (req.method !== 'POST' || req.url !== '/api/enquiry') return send(res, 404, { ok: false, message: 'Not found' })
+  if (req.method !== 'POST' || (req.url !== '/api/enquiry' && req.url !== '/api/subscribe')) return send(res, 404, { ok: false, message: 'Not found' })
 
   const ip = req.socket.remoteAddress || 'unknown'
   if (limited(ip)) return send(res, 429, { ok: false, message: 'Too many enquiries. Please try again later.' })
@@ -76,6 +78,26 @@ const server = http.createServer(async (req, res) => {
 
   // honeypot: pretend success to bots, store nothing
   if (clean(body.website)) return send(res, 200, { ok: true })
+
+  // footer sign-up: just an email address
+  if (req.url === '/api/subscribe') {
+    const email = clean(body.email, 160)
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return send(res, 422, { ok: false, message: 'Please enter a valid email address.' })
+    const sub = { receivedAt: new Date().toISOString(), email, page: clean(body.page, 300), type: 'subscriber' }
+    try {
+      await mkdir(dirname(SUBS_FILE), { recursive: true })
+      await appendFile(SUBS_FILE, JSON.stringify(sub) + '\n', 'utf8')
+      if (WEBHOOK) {
+        const r = await fetch(WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(sub) })
+        if (!r.ok) throw new Error(`webhook responded ${r.status}`)
+      }
+    } catch (err) {
+      console.error('[subscribe] failed:', err.message)
+      return send(res, 500, { ok: false, message: 'The sign-up could not be saved. Please try again.' })
+    }
+    console.log(`[subscribe] stored ${email}`)
+    return send(res, 200, { ok: true })
+  }
 
   const problems = validate(body)
   if (problems.length) return send(res, 422, { ok: false, message: `Please check: ${problems.join(', ')}.` })

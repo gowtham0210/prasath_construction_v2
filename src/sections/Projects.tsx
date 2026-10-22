@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type PointerEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ArrowUpRight, MapPin, Ruler, Home } from 'lucide-react'
 import { projectFilters, projects } from '../data/projects'
@@ -17,6 +17,7 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
   const [filter, setFilter] = useState<Filter>('All Projects')
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
+  const listRef = useRef<HTMLOListElement | null>(null)
   const fine = useFinePointer()
   const reduced = usePrefersReducedMotion()
   const list = useMemo(() => (filter === 'All Projects' ? projects : projects.filter((p) => p.category === filter)), [filter])
@@ -25,6 +26,14 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
   const go = (n: number) => setActive((n + list.length) % list.length)
 
   useEffect(() => setActive(0), [filter])
+
+  // on desktop the list is as tall as the stage and scrolls; keep the chosen project in view inside it
+  useEffect(() => {
+    const ol = listRef.current
+    const li = ol?.children[idx] as HTMLElement | undefined
+    if (!ol || !li || ol.scrollHeight <= ol.clientHeight + 1) return
+    ol.scrollTo({ top: li.offsetTop - ol.clientHeight / 2 + li.offsetHeight / 2, behavior: reduced ? 'auto' : 'smooth' })
+  }, [idx, list.length, reduced])
 
   // gently advance on its own; hovering the showcase or choosing a project stops the clock
   useEffect(() => {
@@ -141,8 +150,8 @@ export default function Projects({ onOpen }: { onOpen: (slug: string) => void })
               </div>
 
               {/* index */}
-              <div className="flex flex-col lg:order-1 lg:col-span-4">
-                <ol className="flex-1 space-y-2" aria-label="Projects">
+              <div className="flex flex-col lg:order-1 lg:col-span-4 lg:h-0 lg:min-h-full">
+                <ol ref={listRef} className="flex-1 space-y-2 lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain lg:py-1 lg:pr-2 [scrollbar-width:thin]" aria-label="Projects" tabIndex={0}>
                   {list.map((p, i) => {
                     const on = i === idx
                     return (

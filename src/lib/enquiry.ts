@@ -85,3 +85,25 @@ export async function submitEnquiry(payload: EnquiryPayload): Promise<void> {
     /* a non-JSON 2xx from a hosted form service is treated as success */
   }
 }
+
+/** Sends a footer sign-up to the server. Resolves only when the server confirms it has been stored. */
+export async function submitSubscribe(email: string): Promise<void> {
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), 15000)
+  let res: Response
+  try {
+    res = await fetch(import.meta.env.VITE_SUBSCRIBE_ENDPOINT || '/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ email, subscribedAt: new Date().toISOString(), page: location.href }),
+      signal: ctrl.signal,
+    })
+  } catch {
+    throw new Error('We could not reach the server. Please check your connection and try again.')
+  } finally {
+    clearTimeout(timer)
+  }
+  if (res.status === 404 || res.status === 405) throw new Error('Sign-up is not set up yet. Please contact us directly instead.')
+  if (res.status === 422 || res.status === 400) throw new Error('Please enter a valid email address.')
+  if (!res.ok) throw new Error('Something went wrong on our side. Please try again in a moment.')
+}

@@ -10,16 +10,25 @@ interface Props {
   onDone: () => void
 }
 
-const draw = (delay: number, dur = 0.9) => ({
-  pathLength: 1,
-  strokeDasharray: 1,
-  strokeDashoffset: 1,
-  style: { animation: `drawLine ${dur}s ${delay}s cubic-bezier(0.65,0,0.35,1) forwards` },
-})
+/** small sparks that drift up from the phoenix (fixed values, so the splash looks the same every time) */
+const embers = [
+  { x: 14, s: 4, h: 120, dx: -14, d: 0.0, t: 2.1 },
+  { x: 24, s: 3, h: 150, dx: 10, d: 0.5, t: 2.6 },
+  { x: 33, s: 5, h: 110, dx: -8, d: 1.1, t: 2.2 },
+  { x: 42, s: 3, h: 170, dx: 16, d: 0.3, t: 2.8 },
+  { x: 50, s: 4, h: 130, dx: -12, d: 0.9, t: 2.3 },
+  { x: 58, s: 3, h: 160, dx: 12, d: 1.4, t: 2.7 },
+  { x: 66, s: 5, h: 115, dx: -10, d: 0.2, t: 2.2 },
+  { x: 75, s: 3, h: 145, dx: 14, d: 0.8, t: 2.5 },
+  { x: 84, s: 4, h: 125, dx: -6, d: 1.2, t: 2.4 },
+  { x: 38, s: 2, h: 185, dx: 8, d: 1.7, t: 3.0 },
+  { x: 62, s: 2, h: 180, dx: -9, d: 0.6, t: 2.9 },
+  { x: 20, s: 2, h: 140, dx: 6, d: 1.9, t: 2.6 },
+]
 
 /**
- * Splash screen, in the same sky-to-peach light as the hero: a modern home draws itself line by line, its windows
- * light up, the name rises letter by letter, and the whole screen lifts away like the rounded frames used across the site.
+ * Splash screen, in the same sky-to-peach light as the hero: the phoenix logo rises out of a turning glow with rings of light and rising embers, the name rises letter by letter,
+ * a line fills along the bottom, and the whole screen lifts away like the rounded frames used across the site.
  */
 export default function Splash({ onReveal, onDone }: Props) {
   const reduced = usePrefersReducedMotion()
@@ -50,26 +59,64 @@ export default function Splash({ onReveal, onDone }: Props) {
       <span className="pointer-events-none absolute -right-16 bottom-10 h-[380px] w-[380px] rounded-full bg-[#ffd9bd]/70 blur-3xl" style={{ animation: 'drift 18s ease-in-out -6s infinite reverse' }} aria-hidden="true" />
       <span className="pointer-events-none absolute left-1/2 top-1/3 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[#7f8bff]/25 blur-3xl" style={{ animation: 'drift 20s ease-in-out -10s infinite' }} aria-hidden="true" />
 
+      {!reduced && (
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[3px] bg-graphite/10" aria-hidden="true">
+          <span className="block h-full origin-left bg-gradient-to-r from-[#8fb3ea] via-[#ff9a3c] to-[#4450e0]" style={{ animation: 'fillBar 2.5s cubic-bezier(0.65,0,0.35,1) forwards' }} />
+        </span>
+      )}
+
       <div className="relative flex flex-col items-center gap-7 px-6 text-center">
-        <svg viewBox="0 0 160 110" className="h-28 w-40 sm:h-32 sm:w-48" fill="none" aria-hidden="true">
-          <path d="M4 100H156" stroke="#0f1218" strokeWidth="1.6" strokeLinecap="round" {...draw(0.1, 0.8)} />
-          <path d="M18 100V58H112V100" stroke="#0f1218" strokeWidth="2" strokeLinejoin="round" {...draw(0.4)} />
-          <path d="M34 58V30H98V58" stroke="#0f1218" strokeWidth="2" strokeLinejoin="round" {...draw(0.8)} />
-          <path d="M12 58H118M28 30H104" stroke="#0f1218" strokeWidth="2.2" strokeLinecap="round" {...draw(1.2, 0.7)} />
-          <path d="M112 100V44H140V100" stroke="#0f1218" strokeWidth="2" strokeLinejoin="round" {...draw(1.0)} />
-          <path d="M60 100V76H78V100" stroke="#4450e0" strokeWidth="2.4" strokeLinejoin="round" {...draw(1.5, 0.6)} />
-          {[
-            { x: 40, y: 38, w: 22, h: 14 },
-            { x: 70, y: 38, w: 22, h: 14 },
-            { x: 26, y: 68, w: 24, h: 18 },
-            { x: 88, y: 68, w: 16, h: 18 },
-          ].map((w, i) => (
-            <g key={i}>
-              <rect x={w.x} y={w.y} width={w.w} height={w.h} rx="1.5" stroke="#0f1218" strokeWidth="1.6" {...draw(1.4 + i * 0.1, 0.6)} />
-              <rect x={w.x} y={w.y} width={w.w} height={w.h} rx="1.5" fill="#f0c9ae" style={{ opacity: 0, animation: `windowOn 0.9s ${1.9 + i * 0.12}s ease-out forwards` }} />
-            </g>
-          ))}
-        </svg>
+        {/* the phoenix: a glowing halo turns behind it, rings of light spread out, embers rise, and it settles with a slow breath */}
+        <div className="relative grid h-40 w-48 place-items-center sm:h-48 sm:w-56">
+          {!reduced && (
+            <>
+              <span
+                className="absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 blur-2xl"
+                style={{ background: 'conic-gradient(from 0deg, rgba(255,140,40,0) 0deg, rgba(255,150,50,0.55) 70deg, rgba(255,210,120,0) 140deg, rgba(255,120,40,0.45) 230deg, rgba(255,140,40,0) 300deg)', animation: 'spinGlow 7s linear infinite' }}
+                aria-hidden="true"
+              />
+              {[0, 0.9, 1.8].map((d) => (
+                <motion.span
+                  key={d}
+                  className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff9a3c]/60"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: [0.5, 2.6], opacity: [0, 0.7, 0] }}
+                  transition={{ duration: 2.4, delay: 0.5 + d, repeat: Infinity, ease: 'easeOut' }}
+                  aria-hidden="true"
+                />
+              ))}
+              {embers.map((e, i) => (
+                <motion.span
+                  key={i}
+                  className="absolute bottom-6 rounded-full bg-[#ffb347]"
+                  style={{ left: `${e.x}%`, width: e.s, height: e.s, boxShadow: '0 0 10px 2px rgba(255,150,40,0.8)' }}
+                  initial={{ y: 0, opacity: 0 }}
+                  animate={{ y: [0, -e.h], x: [0, e.dx], opacity: [0, 1, 0] }}
+                  transition={{ duration: e.t, delay: 0.7 + e.d, repeat: Infinity, ease: 'easeOut' }}
+                  aria-hidden="true"
+                />
+              ))}
+            </>
+          )}
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, scale: 0.4, y: 40, rotate: -6, filter: 'blur(14px)' }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotate: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <motion.img
+              src="/logo.png"
+              alt=""
+              width={160}
+              height={152}
+              draggable={false}
+              className="h-28 w-auto object-contain sm:h-36"
+              animate={reduced ? undefined : { scale: [1, 1.05, 1], filter: ['drop-shadow(0 14px 28px rgba(240,120,40,0.35))', 'drop-shadow(0 18px 48px rgba(255,140,40,0.8))', 'drop-shadow(0 14px 28px rgba(240,120,40,0.35))'] }}
+              transition={{ duration: 2.2, delay: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+              aria-hidden="true"
+            />
+          </motion.div>
+        </div>
 
         <div className="flex flex-col items-center gap-1 text-[clamp(1.5rem,6vw,2.6rem)] font-semibold tracking-[0.3em]" aria-hidden="true">
           {words.map((w, wi) => (
